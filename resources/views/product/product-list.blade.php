@@ -8,7 +8,22 @@
                     <div class="card-header">Products</div>
 
                     <div class="card-body">
+                        <table class="table">
 
+                            @foreach($list as $item)
+                                <tr>
+                                    <td>{{ $item->id }}</td>
+                                    <td>{{ $item->title }}</td>
+                                    <td>{{ $item->description }}</td>
+                                    <td>{{ $item->price }}</td>
+                                </tr>
+                            @endforeach
+
+                        </table>
+                    </div>
+
+                    <div class="card-footer">
+                        {{ $list->links() }}
                     </div>
                 </div>
             </div>
