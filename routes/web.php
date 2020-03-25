@@ -14,38 +14,46 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', function() {
     return view('welcome');
 });
-
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')
     ->name('home');
 
-Route::get('products', 'ProductController@index')
-    ->name('products.index');
-Route::get('products/create', 'ProductController@create')
-    ->name('products.create');
-Route::post('products', 'ProductController@store')
-    ->name('products.store');
-Route::get('products/{product}/edit', 'ProductController@edit')
-    ->name('products.edit');
-Route::put('products/{product}', 'ProductController@update')
-    ->name('products.update');
-Route::delete('products/{product}', 'ProductController@destroy')
-    ->name('products.destroy');
+Route::prefix('products')->name('products.')->group(function() {
+    Route::get('/', 'ProductController@index')
+        ->name('index');
+    Route::get('create', 'ProductController@create')
+        ->name('create');
+    Route::post('/', 'ProductController@store')
+        ->name('store');
+    Route::get('{product}/edit', 'ProductController@edit')
+        ->name('edit');
+    Route::put('{product}', 'ProductController@update')
+        ->name('update');
+    Route::delete('{product}', 'ProductController@destroy')
+        ->name('destroy');
 
-Route::get('categories', 'CategoryController@index')
-    ->name('categories.index');
-Route::get('categories/create', 'CategoryController@create')
-    ->name('categories.create');
-Route::post('categories', 'CategoryController@store')
-    ->name('categories.store');
-Route::get('categories/{category}/edit', 'CategoryController@edit')
-    ->name('categories.edit');
-Route::put('categories/{category}', 'CategoryController@update')
-    ->name('categories.update');
-Route::delete('categories/{category}', 'CategoryController@destroy')
-    ->name('categories.destroy');
+    Route::resource('attributes', 'ProductAttributeController')
+        ->except(['show']);
+});
+
+Route::prefix('categories')->name('categories.')->group(function() {
+    Route::get('/', 'CategoryController@index')
+        ->name('index');
+    Route::get('create', 'CategoryController@create')
+        ->name('create');
+    Route::post('/', 'CategoryController@store')
+        ->name('store');
+    Route::get('{category}/edit', 'CategoryController@edit')
+        ->name('edit');
+    Route::put('{category}', 'CategoryController@update')
+        ->name('update');
+    Route::delete('{category}', 'CategoryController@destroy')
+        ->name('destroy');
+});
+
+

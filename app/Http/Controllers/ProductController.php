@@ -6,7 +6,9 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 /**
  * Class ProductController
@@ -16,9 +18,9 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
     /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return View
      */
-    public function index() {
+    public function index(): View {
         // SELECT * FROM products LIMITS 15, 30
         /** @var LengthAwarePaginator $products */
         $products = Product::query()->paginate();
@@ -29,18 +31,18 @@ class ProductController extends Controller
     }
 
     /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return View
      */
-    public function create() {
+    public function create(): View {
         return view('product.create');
     }
 
     /**
      * @param Request $request
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function store(Request $request) {
+    public function store(Request $request): RedirectResponse {
         $data = $request->only(
             'title',
             'description',
@@ -55,9 +57,9 @@ class ProductController extends Controller
     /**
      * @param int $id
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return View
      */
-    public function edit(int $id) {
+    public function edit(int $id): View {
         // SELECT * FROM products WHERE id = ?
         $product = Product::query()->find($id);
 
@@ -68,9 +70,9 @@ class ProductController extends Controller
      * @param Request $request
      * @param int $id
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function update(Request $request, int $id) {
+    public function update(Request $request, int $id): RedirectResponse {
         $data = $request->only('title', 'description', 'price');
 
         Product::query()
@@ -83,9 +85,9 @@ class ProductController extends Controller
     /**
      * @param int $id
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function destroy(int $id) {
+    public function destroy(int $id): RedirectResponse {
         // DELETE FROM products WHERE id = ?
         Product::query()
             ->where('id', '=', $id)

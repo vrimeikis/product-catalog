@@ -6,7 +6,10 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 /**
  * Class CategoryController
@@ -16,9 +19,9 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller
 {
     /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return View
      */
-    public function index() {
+    public function index(): View {
         /** @var LengthAwarePaginator $categories */
         $categories = Category::query()->paginate();
 
@@ -26,18 +29,18 @@ class CategoryController extends Controller
     }
 
     /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return View
      */
-    public function create() {
+    public function create(): View {
         return view('category.create');
     }
 
     /**
      * @param Request $request
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function store(Request $request) {
+    public function store(Request $request): RedirectResponse {
         $data = $request->only(
             'title'
         );
@@ -50,9 +53,9 @@ class CategoryController extends Controller
     /**
      * @param int $id
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Factory|View
      */
-    public function edit(int $id) {
+    public function edit(int $id): View {
         // SELECT * FROM products WHERE id = ?
         $category = Category::query()->find($id);
 
@@ -63,9 +66,9 @@ class CategoryController extends Controller
      * @param Request $request
      * @param int $id
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function update(Request $request, int $id) {
+    public function update(Request $request, int $id): RedirectResponse {
         $data = $request->only('title');
 
         Category::query()
@@ -78,9 +81,9 @@ class CategoryController extends Controller
     /**
      * @param int $id
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function destroy(int $id) {
+    public function destroy(int $id): RedirectResponse {
         // DELETE FROM products WHERE id = ?
         Category::query()
             ->where('id', '=', $id)

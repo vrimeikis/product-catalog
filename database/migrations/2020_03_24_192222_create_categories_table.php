@@ -13,7 +13,7 @@ class CreateCategoriesTable extends Migration
      *
      * @return void
      */
-    public function up() {
+    public function up(): void {
         Schema::create('categories', function(Blueprint $table) {
             $table->id();
             $table->timestamps();
@@ -26,7 +26,7 @@ class CreateCategoriesTable extends Migration
      *
      * @return void
      */
-    public function down() {
+    public function down(): void {
         Schema::dropIfExists('categories');
     }
 
