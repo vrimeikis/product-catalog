@@ -5,7 +5,10 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Categories</div>
+                    <div class="card-header">
+                        Categories
+                        <a href="{{ route('categories.create') }}" class="btn btn-sm btn-primary">+</a>
+                    </div>
 
                     <div class="card-body">
                         <table class="table">
@@ -14,6 +17,14 @@
                                 <tr>
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->title }}</td>
+                                    <td>
+                                        <a href="{{ route('categories.edit', ['category' => $item->id]) }}" class="btn btn-sm btn-primary">Edit</a>
+                                        <form action="{{ route('categories.destroy', ['category' => $item->id]) }}" method="post">
+                                            @csrf
+                                            @method('delete')
+                                            <input type="submit" onclick="return confirm('Do you really want to delete a record?');" class="btn btn-sm btn-danger" value="Delete">
+                                        </form>
+                                    </td>
                                 </tr>
                             @endforeach
 
