@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Http\Requests\ProductStoreRequest;
 use App\Product;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\RedirectResponse;
@@ -45,11 +46,11 @@ class ProductController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param ProductStoreRequest $request
      *
      * @return RedirectResponse
      */
-    public function store(Request $request): RedirectResponse {
+    public function store(ProductStoreRequest $request): RedirectResponse {
         $data = $request->only(
             'title',
             'description',
