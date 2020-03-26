@@ -6,10 +6,10 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Http\Requests\ProductStoreRequest;
+use App\Http\Requests\ProductUpdateRequest;
 use App\Product;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
 
@@ -87,12 +87,12 @@ class ProductController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param ProductUpdateRequest $request
      * @param Product $product
      *
      * @return RedirectResponse
      */
-    public function update(Request $request, Product $product): RedirectResponse {
+    public function update(ProductUpdateRequest $request, Product $product): RedirectResponse {
         $data = $request->only('title', 'description', 'price');
         $catIds = $request->input('categories');
 
