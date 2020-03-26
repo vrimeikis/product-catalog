@@ -21,6 +21,12 @@
                                 <label for="price">Price</label>
                                 <input class="form-control" type="number" name="price" id="price" value="" min="0.01" step="0.01">
                             </div>
+                            <div class="form-group">
+                                <label for="categories">Categories</label>
+                                @foreach($categories as $category)
+                                    <input type="checkbox" name="categories[]" value="{{ $category->id }}"> {{ $category->title }}
+                                @endforeach
+                            </div>
                         </div>
 
                         <div class="card-footer">

@@ -4,10 +4,12 @@ declare(strict_types = 1);
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Product;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\View\View;
 
 /**
@@ -34,7 +36,12 @@ class ProductController extends Controller
      * @return View
      */
     public function create(): View {
-        return view('product.create');
+        /** @var Collection|Category[] $categories */
+        $categories = Category::query()->get();
+
+        return view('product.create', [
+            'categories' => $categories,
+        ]);
     }
 
     /**
@@ -49,7 +56,11 @@ class ProductController extends Controller
             'price'
         );
 
-        Product::query()->create($data);
+        $catIds = $request->input('categories');
+
+        /** @var Product $product */
+        $product = Product::query()->create($data);
+        $product->categories()->sync($catIds);
 
         return redirect()->route('products.index');
     }
@@ -61,23 +72,31 @@ class ProductController extends Controller
      */
     public function edit(int $id): View {
         // SELECT * FROM products WHERE id = ?
+        /** @var Product $product */
         $product = Product::query()->find($id);
+        $productCategoryIds = $product->categories()->pluck('id')->toArray();
+        /** @var Category $categories */
+        $categories = Category::query()->get();
 
-        return view('product.edit', ['product' => $product]);
+        return view('product.edit', [
+            'product' => $product,
+            'categoryIds' => $productCategoryIds,
+            'categories' => $categories,
+        ]);
     }
 
     /**
      * @param Request $request
-     * @param int $id
+     * @param Product $product
      *
      * @return RedirectResponse
      */
-    public function update(Request $request, int $id): RedirectResponse {
+    public function update(Request $request, Product $product): RedirectResponse {
         $data = $request->only('title', 'description', 'price');
+        $catIds = $request->input('categories');
 
-        Product::query()
-            ->where('id', '=', $id)
-            ->update($data);
+        $product->update($data);
+        $product->categories()->sync($catIds);
 
         return redirect()->route('products.index');
     }
