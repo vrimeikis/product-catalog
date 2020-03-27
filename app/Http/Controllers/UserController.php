@@ -4,10 +4,11 @@ declare(strict_types = 1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserUpdateRequest;
 use App\User;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 
 /**
@@ -28,12 +29,22 @@ class UserController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @param int $id
+     * @param UserUpdateRequest $request
+     * @param User $user
      *
      * @return RedirectResponse
      */
-    public function update(Request $request, int $id): RedirectResponse {
+    public function update(UserUpdateRequest $request, User $user): RedirectResponse {
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+
+        $password = $request->input('password');
+        if (!empty($password)) {
+            $user->password = Hash::make($password);
+        }
+
+        $user->save();
+
         return redirect()->route('users.me');
     }
 

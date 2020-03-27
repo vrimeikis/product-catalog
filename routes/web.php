@@ -24,8 +24,10 @@ Route::get('/home', 'HomeController@index')
     ->name('home');
 
 Route::middleware('auth')->group(function() {
-    Route::get('users/me', 'UserController@me')
-        ->name('users.me');
+        Route::get('users/me', 'UserController@me')
+            ->name('users.me');
+        Route::resource('users', 'UserController')
+            ->only(['update']);
 
     Route::prefix('products')->name('products.')->group(function() {
         Route::get('/', 'ProductController@index')
