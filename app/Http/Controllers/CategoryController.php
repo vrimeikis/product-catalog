@@ -5,10 +5,11 @@ declare(strict_types = 1);
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Http\Requests\CategoryStoreRequest;
+use App\Http\Requests\CategoryUpdateRequest;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 /**
@@ -36,11 +37,11 @@ class CategoryController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param CategoryStoreRequest $request
      *
      * @return RedirectResponse
      */
-    public function store(Request $request): RedirectResponse {
+    public function store(CategoryStoreRequest $request): RedirectResponse {
         $data = $request->only(
             'title'
         );
@@ -63,12 +64,12 @@ class CategoryController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param CategoryUpdateRequest $request
      * @param int $id
      *
      * @return RedirectResponse
      */
-    public function update(Request $request, int $id): RedirectResponse {
+    public function update(CategoryUpdateRequest $request, int $id): RedirectResponse {
         $data = $request->only('title');
 
         Category::query()

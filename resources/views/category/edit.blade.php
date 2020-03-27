@@ -13,7 +13,12 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="title">Title</label>
-                                <input class="form-control" type="text" name="title" id="title" value="{{ $category->title }}">
+                                <input class="form-control @error('title') is-invalid @enderror" type="text" name="title" id="title" value="{{ old('title', $category->title) }}">
+                                @error('title')
+                                <div class="alert-danger">
+                                    {{ $message }}
+                                </div>
+                                @enderror
                             </div>
                         </div>
 
