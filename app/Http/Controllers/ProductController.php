@@ -40,7 +40,7 @@ class ProductController extends Controller
         /** @var Collection|Category[] $categories */
         $categories = Category::query()->get();
 
-        return view('product.create', [
+        return view('product.form', [
             'categories' => $categories,
         ]);
     }
@@ -79,7 +79,7 @@ class ProductController extends Controller
         /** @var Category $categories */
         $categories = Category::query()->get();
 
-        return view('product.edit', [
+        return view('product.form', [
             'product' => $product,
             'categoryIds' => $productCategoryIds,
             'categories' => $categories,
