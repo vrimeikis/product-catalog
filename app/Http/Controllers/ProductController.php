@@ -8,6 +8,7 @@ use App\Category;
 use App\Http\Requests\ProductStoreRequest;
 use App\Http\Requests\ProductUpdateRequest;
 use App\Product;
+use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
@@ -51,13 +52,9 @@ class ProductController extends Controller
      * @return RedirectResponse
      */
     public function store(ProductStoreRequest $request): RedirectResponse {
-        $data = $request->only(
-            'title',
-            'description',
-            'price'
-        );
+        $data = $request->getData();
 
-        $catIds = $request->input('categories');
+        $catIds = $request->getCategories();
 
         /** @var Product $product */
         $product = Product::query()->create($data);
@@ -93,8 +90,8 @@ class ProductController extends Controller
      * @return RedirectResponse
      */
     public function update(ProductUpdateRequest $request, Product $product): RedirectResponse {
-        $data = $request->only('title', 'description', 'price');
-        $catIds = $request->input('categories');
+        $data = $request->getData();
+        $catIds = $request->getCategories();
 
         $product->update($data);
         $product->categories()->sync($catIds);
@@ -106,6 +103,7 @@ class ProductController extends Controller
      * @param int $id
      *
      * @return RedirectResponse
+     * @throws Exception
      */
     public function destroy(int $id): RedirectResponse {
         // DELETE FROM products WHERE id = ?

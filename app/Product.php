@@ -20,11 +20,13 @@ use Illuminate\Support\Carbon;
  * @property string $title
  * @property string $description
  * @property float $price
+ * @property int $active
  * @property-read Collection|Category[] $categories
  * @property-read int|null $categories_count
  * @method static Builder|Product newModelQuery()
  * @method static Builder|Product newQuery()
  * @method static Builder|Product query()
+ * @method static Builder|Product whereActive($value)
  * @method static Builder|Product whereCreatedAt($value)
  * @method static Builder|Product whereDescription($value)
  * @method static Builder|Product whereId($value)
@@ -42,6 +44,11 @@ class Product extends Model
         'title',
         'description',
         'price',
+        'active',
+    ];
+
+    protected $casts = [
+        'active' => 'boolean',
     ];
 
     /**

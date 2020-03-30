@@ -63,6 +63,17 @@
                                     > {{ $category->title }}
                                 @endforeach
                             </div>
+
+                            <div class="form-group">
+                                <label for="active">Active</label>
+                                <input class="@error('active') is-invalid @enderror" type="checkbox" name="active" id="active"
+                                       value="1" @if (old('active', $product->active ?? false)) checked @endif>
+                                @error('active')
+                                <div class="alert-danger">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </div>
                         </div>
 
                         <div class="card-footer">
