@@ -45,7 +45,8 @@ class UserController extends Controller
 
         $user->save();
 
-        return redirect()->route('users.me');
+        return redirect()->route('users.me')
+            ->with('status', 'Info updated successfully!');
     }
 
 }
