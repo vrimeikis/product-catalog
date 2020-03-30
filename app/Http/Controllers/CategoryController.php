@@ -33,7 +33,7 @@ class CategoryController extends Controller
      * @return View
      */
     public function create(): View {
-        return view('category.create');
+        return view('category.form');
     }
 
     /**
@@ -60,7 +60,7 @@ class CategoryController extends Controller
         // SELECT * FROM products WHERE id = ?
         $category = Category::query()->find($id);
 
-        return view('category.edit', ['category' => $category]);
+        return view('category.form', ['category' => $category]);
     }
 
     /**
