@@ -123,7 +123,7 @@ class ProductStoreRequest extends FormRequest
     /**
      * @return bool
      */
-    private function slugExists(): bool {
+    protected function slugExists(): bool {
         return Product::query()
             ->where('slug', '=', $this->getSlug())
             ->exists();

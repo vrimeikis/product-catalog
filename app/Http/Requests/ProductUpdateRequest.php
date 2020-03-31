@@ -5,16 +5,13 @@ declare(strict_types = 1);
 namespace App\Http\Requests;
 
 use App\Product;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Str;
 
 /**
  * Class ProductUpdateRequest
  *
  * @package App\Http\Requests
  */
-class ProductUpdateRequest extends FormRequest
+class ProductUpdateRequest extends ProductStoreRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -31,104 +28,16 @@ class ProductUpdateRequest extends FormRequest
      * @return array
      */
     public function rules(): array {
-        return [
-            'title' => 'required|string|max:255|min:3',
-            'description' => 'required|string|min:10',
-            'price' => 'required|numeric|min:0.01',
-            'categories' => [
-                'sometimes',
-                'array',
-            ],
-            'active' => 'nullable|boolean',
-        ];
-    }
-
-    /**
-     * @return Validator
-     */
-    protected function getValidatorInstance() {
-        $validator = parent::getValidatorInstance();
-
-        $validator->after(function(Validator $validator) {
-            if ($this->slugExists()) {
-                $validator->errors()
-                    ->add('slug', 'This slug already exists.');
-            }
-        });
-
-        return $validator;
-    }
-
-    /**
-     * @return array
-     */
-    public function getData(): array {
-        return [
-            'title' => $this->getTitle(),
-            'slug' => $this->getSlug(),
-            'description' => $this->getDescription(),
-            'price' => $this->getPrice(),
-            'active' => $this->getActive(),
-        ];
-    }
-
-    /**
-     * @return string
-     */
-    public function getTitle(): string {
-        return $this->input('title');
-    }
-
-    /**
-     * @return string
-     */
-    public function getSlug() {
-        $slugUnprepared = $this->input('slug');
-
-        if (empty($slugUnprepared)) {
-            $slugUnprepared = $this->getTitle();
-        }
-
-        return Str::slug(trim($slugUnprepared));
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription(): string {
-        return $this->input('description');
-    }
-
-    /**
-     * @return float
-     */
-    public function getPrice(): float {
-        return (float)$this->input('price', 0.01);
+        return parent::rules();
     }
 
     /**
      * @return bool
      */
-    public function getActive(): bool {
-        return (bool)$this->input('active');
-    }
-
-    /**
-     * @return array
-     */
-    public function getCategories(): array
-    {
-        return $this->input('categories', []);
-    }
-
-    /**
-     * @return bool
-     */
-    private function slugExists(): bool {
+    protected function slugExists(): bool {
         return Product::query()
             ->where('slug', '=', $this->getSlug())
             ->where('id', '!=', $this->route()->parameter('product')->id)
             ->exists();
     }
-
 }
