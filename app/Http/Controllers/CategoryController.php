@@ -42,9 +42,7 @@ class CategoryController extends Controller
      * @return RedirectResponse
      */
     public function store(CategoryStoreRequest $request): RedirectResponse {
-        $data = $request->only(
-            'title'
-        );
+        $data = $request->getData();
 
         Category::query()->create($data);
 
@@ -70,7 +68,7 @@ class CategoryController extends Controller
      * @return RedirectResponse
      */
     public function update(CategoryUpdateRequest $request, int $id): RedirectResponse {
-        $data = $request->only('title');
+        $data = $request->getData();
 
         Category::query()
             ->where('id', '=', $id)

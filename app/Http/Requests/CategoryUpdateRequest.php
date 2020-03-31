@@ -4,8 +4,16 @@ declare(strict_types = 1);
 
 namespace App\Http\Requests;
 
+use App\Category;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 
+/**
+ * Class CategoryUpdateRequest
+ *
+ * @package App\Http\Requests
+ */
 class CategoryUpdateRequest extends FormRequest
 {
     /**
@@ -26,6 +34,62 @@ class CategoryUpdateRequest extends FormRequest
         return [
             'title' => 'required|string|min:3|max:255',
         ];
+    }
+
+    /**
+     * @return Validator
+     */
+    protected function getValidatorInstance() {
+        $validator = parent::getValidatorInstance();
+
+        $validator->after(function(Validator $validator) {
+            if ($this->slugExists()) {
+                $validator->errors()
+                    ->add('slug', 'This slug already exists.');
+            }
+        });
+
+        return $validator;
+    }
+
+    /**
+     * @return array
+     */
+    public function getData(): array {
+        return [
+            'title' => $this->getTitle(),
+            'slug' => $this->getSlug(),
+        ];
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle(): string {
+        return (string)$this->input('title');
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug() {
+        $slugUnprepared = $this->input('slug');
+
+        if (empty($slugUnprepared)) {
+            $slugUnprepared = $this->getTitle();
+        }
+
+        return Str::slug(trim($slugUnprepared));
+    }
+
+    /**
+     * @return bool
+     */
+    private function slugExists(): bool {
+        return Category::query()
+            ->where('slug', '=', $this->getSlug())
+            ->where('id', '!=', $this->route()->parameter('category'))
+            ->exists();
     }
 
 }
