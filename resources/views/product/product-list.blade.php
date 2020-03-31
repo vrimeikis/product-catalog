@@ -12,12 +12,20 @@
 
                     <div class="card-body">
                         <table class="table">
+                            <tr>
+                                <th>#</th>
+                                <th>Title</th>
+                                <th>Slug</th>
+                                <th>Price</th>
+                                <th>Categories</th>
+                                <th>Actions</th>
+                            </tr>
 
                             @foreach($list as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->title }}</td>
-                                    <td>{{ $item->description }}</td>
+                                    <td>{{ $item->slug }}</td>
                                     <td>{{ $item->price }}</td>
                                     <td>
                                         @foreach($item->categories as $category)

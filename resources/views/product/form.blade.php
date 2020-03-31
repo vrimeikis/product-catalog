@@ -33,6 +33,17 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="slug">Slug</label>
+                                <input class="form-control @error('slug') is-invalid @enderror" type="text" name="slug" id="slug"
+                                       value="{{ old('slug', $product->slug ?? '') }}">
+                                @error('slug')
+                                <div class="alert-danger">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
                                 <label for="description">Description</label>
                                 <textarea class="form-control @error('description') is-invalid @enderror"
                                           name="description" id="description"

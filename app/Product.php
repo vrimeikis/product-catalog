@@ -18,6 +18,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string $title
+ * @property string $slug
  * @property string $description
  * @property float $price
  * @property int $active
@@ -31,6 +32,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Product whereDescription($value)
  * @method static Builder|Product whereId($value)
  * @method static Builder|Product wherePrice($value)
+ * @method static Builder|Product whereSlug($value)
  * @method static Builder|Product whereTitle($value)
  * @method static Builder|Product whereUpdatedAt($value)
  * @mixin \Eloquent
@@ -42,6 +44,7 @@ class Product extends Model
      */
     protected $fillable = [
         'title',
+        'slug',
         'description',
         'price',
         'active',

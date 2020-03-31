@@ -4,8 +4,16 @@ declare(strict_types = 1);
 
 namespace App\Http\Requests;
 
+use App\Product;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 
+/**
+ * Class ProductStoreRequest
+ *
+ * @package App\Http\Requests
+ */
 class ProductStoreRequest extends FormRequest
 {
     /**
@@ -36,6 +44,22 @@ class ProductStoreRequest extends FormRequest
     }
 
     /**
+     * @return Validator
+     */
+    protected function getValidatorInstance() {
+        $validator = parent::getValidatorInstance();
+
+        $validator->after(function(Validator $validator) {
+            if ($this->slugExists()) {
+                $validator->errors()
+                    ->add('slug', 'This slug already exists.');
+            }
+        });
+
+        return $validator;
+    }
+
+    /**
      * @return array
      */
     public function getData(): array {
@@ -51,7 +75,20 @@ class ProductStoreRequest extends FormRequest
      * @return string
      */
     public function getTitle(): string {
-        return $this->input('title');
+        return (string)$this->input('title');
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug() {
+        $slugUnprepared = $this->input('slug');
+
+        if (empty($slugUnprepared)) {
+            $slugUnprepared = $this->getTitle();
+        }
+
+        return Str::slug(trim($slugUnprepared));
     }
 
     /**
@@ -78,9 +115,18 @@ class ProductStoreRequest extends FormRequest
     /**
      * @return array
      */
-    public function getCategories(): array
-    {
+    public function getCategories(): array {
         return $this->input('categories', []);
     }
+
+    /**
+     * @return bool
+     */
+    private function slugExists(): bool {
+        return Product::query()
+            ->where('slug', '=', $this->getSlug())
+            ->exists();
+    }
+
 
 }
