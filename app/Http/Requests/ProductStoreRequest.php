@@ -65,6 +65,7 @@ class ProductStoreRequest extends FormRequest
     public function getData(): array {
         return [
             'title' => $this->getTitle(),
+            'slug' => $this->getSlug(),
             'description' => $this->getDescription(),
             'price' => $this->getPrice(),
             'active' => $this->getActive(),

@@ -4,7 +4,10 @@ declare(strict_types = 1);
 
 namespace App\Http\Requests;
 
+use App\Product;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 
 /**
  * Class ProductUpdateRequest
@@ -41,11 +44,28 @@ class ProductUpdateRequest extends FormRequest
     }
 
     /**
+     * @return Validator
+     */
+    protected function getValidatorInstance() {
+        $validator = parent::getValidatorInstance();
+
+        $validator->after(function(Validator $validator) {
+            if ($this->slugExists()) {
+                $validator->errors()
+                    ->add('slug', 'This slug already exists.');
+            }
+        });
+
+        return $validator;
+    }
+
+    /**
      * @return array
      */
     public function getData(): array {
         return [
             'title' => $this->getTitle(),
+            'slug' => $this->getSlug(),
             'description' => $this->getDescription(),
             'price' => $this->getPrice(),
             'active' => $this->getActive(),
@@ -57,6 +77,19 @@ class ProductUpdateRequest extends FormRequest
      */
     public function getTitle(): string {
         return $this->input('title');
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug() {
+        $slugUnprepared = $this->input('slug');
+
+        if (empty($slugUnprepared)) {
+            $slugUnprepared = $this->getTitle();
+        }
+
+        return Str::slug(trim($slugUnprepared));
     }
 
     /**
@@ -86,6 +119,16 @@ class ProductUpdateRequest extends FormRequest
     public function getCategories(): array
     {
         return $this->input('categories', []);
+    }
+
+    /**
+     * @return bool
+     */
+    private function slugExists(): bool {
+        return Product::query()
+            ->where('slug', '=', $this->getSlug())
+            ->where('id', '!=', $this->route()->parameter('product')->id)
+            ->exists();
     }
 
 }
