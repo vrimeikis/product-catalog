@@ -18,6 +18,7 @@
                                 <th>Slug</th>
                                 <th>Price</th>
                                 <th>Categories</th>
+                                <th>Active</th>
                                 <th>Actions</th>
                             </tr>
 
@@ -31,6 +32,9 @@
                                         @foreach($item->categories as $category)
                                             {{$category->title}}<br>
                                         @endforeach
+                                    </td>
+                                    <td class="@if ($item->active) text-success @else text-danger @endif">
+                                        {{ $item->active ? 'Yes' : 'No'   }}
                                     </td>
                                     <td>
                                         <a href="{{ route('products.edit', ['product' => $item->id]) }}"

@@ -50,7 +50,10 @@ class ProductStoreRequest extends FormRequest
         $validator = parent::getValidatorInstance();
 
         $validator->after(function(Validator $validator) {
-            if ($this->slugExists()) {
+            if (
+                ($this->isMethod('post') || $this->isMethod('put')) &&
+                $this->slugExists()
+            ) {
                 $validator->errors()
                     ->add('slug', 'This slug already exists.');
             }
