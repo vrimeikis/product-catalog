@@ -1,0 +1,94 @@
+@extends('layouts.app')
+
+@section('content')
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        @isset($item->id)
+                            Edit
+                        @else
+                            New
+                        @endisset
+                        admin
+                    </div>
+
+                    <form action="{{ route('admins.' . (isset($item->id) ? 'update' : 'store'), isset($item->id) ? ['admin' => $item->id] : []) }}" method="post">
+                        @csrf
+                        @isset($item->id)
+                            @method('put')
+                        @endisset
+
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input class="form-control @error('name') is-invalid @enderror" type="text" name="name" id="name"
+                                       value="{{ old('name', $item->name ?? '') }}">
+                                @error('name')
+                                <div class="alert-danger">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="last_name">Last name</label>
+                                <input class="form-control @error('last_name') is-invalid @enderror" type="text" name="last_name" id="last_name"
+                                       value="{{ old('last_name', $item->last_name ?? '') }}">
+                                @error('last_name')
+                                <div class="alert-danger">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">E-mail</label>
+                                <input class="form-control @error('email') is-invalid @enderror" type="email" name="email" id="email"
+                                       value="{{ old('email', $item->email ?? '') }}">
+                                @error('email')
+                                <div class="alert-danger">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input class="form-control @error('password') is-invalid @enderror" type="password" name="password" id="password"
+                                       value="">
+                                @error('password')
+                                <div class="alert-danger">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password_confirmation">Confirm password</label>
+                                <input class="form-control @error('password') is-invalid @enderror" type="password" name="password_confirmation" id="password_confirmation"
+                                       value="">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="active">Active</label>
+                                <input class="@error('active') is-invalid @enderror" type="checkbox" name="active" id="active"
+                                       value="1" @if (old('active', $item->active ?? false)) checked @endif>
+                                @error('active')
+                                <div class="alert-danger">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <input type="submit" class="btn btn-success" value="Save">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
