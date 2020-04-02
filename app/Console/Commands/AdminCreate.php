@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Console\Commands;
 
-use App\User;
+use App\Admin;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -42,16 +42,14 @@ class AdminCreate extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return void
      */
     public function handle(): void {
-        $name = $this->enterName();
         $email = $this->enterEmail();
         $password = $this->enterPassword();
 
-        $user = new User();
+        $user = new Admin();
 
-        $user->name = $name;
         $user->email = $email;
         $user->password = Hash::make($password); //bcrypt($password);
 
@@ -59,25 +57,6 @@ class AdminCreate extends Command
 
         $this->info('User created!!!');
 
-    }
-
-    /**
-     * @return string
-     */
-    private function enterName(): string {
-        $name = $this->ask('Enter admin name');
-
-        $validator = Validator::make(['name' => $name], [
-            'name' => 'required|max:255',
-        ]);
-
-        if ($validator->fails()) {
-            $this->error($validator->errors()->first('name'));
-
-            return $this->enterName();
-        }
-
-        return $name;
     }
 
     /**

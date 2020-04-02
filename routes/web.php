@@ -34,6 +34,11 @@ Route::namespace('Admin\Auth')->prefix('admin')->name('admin.')->group(function(
         ->name('password.request');
     Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail')
         ->name('password.email');
+
+    Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm')
+        ->name('password.reset');
+    Route::post('password/reset', 'ResetPasswordController@reset')
+        ->name('password.update');
 });
 
 Route::middleware('auth:admin')->group(function() {

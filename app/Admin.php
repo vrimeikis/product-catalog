@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App;
 
+use App\Notifications\ResetAdminPasswordNotification;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\DatabaseNotification;
@@ -72,5 +73,9 @@ class Admin extends Authenticatable
         'email_verified_at' => 'datetime',
         'active' => 'boolean',
     ];
+
+    public function sendPasswordResetNotification($token) {
+        $this->notify(new ResetAdminPasswordNotification($token));
+    }
 
 }
