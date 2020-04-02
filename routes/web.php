@@ -16,14 +16,27 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function() {
     return view('welcome');
-});
+})->name('index');
 
 Auth::routes(['register' => false]);
 
 Route::get('/home', 'HomeController@index')
     ->name('home');
 
-Route::middleware('auth')->group(function() {
+Route::namespace('Admin\Auth')->prefix('admin')->name('admin.')->group(function() {
+    Route::get('login', 'LoginController@showLoginForm')
+        ->name('login');
+    Route::post('login', 'LoginController@login');
+    Route::post('logout', 'LoginController@logout')
+        ->name('logout');
+
+    Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm')
+        ->name('password.request');
+    Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail')
+        ->name('password.email');
+});
+
+Route::middleware('auth:admin')->group(function() {
     Route::namespace('Admin')->group(function() {
         Route::resource('admins', 'AdminController')->except('show');
     });
