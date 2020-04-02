@@ -6,13 +6,14 @@ namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 /**
- * Class AdminStoreRequest
+ * Class AdminUpdateRequest
  *
  * @package App\Http\Requests\Admin
  */
-class AdminStoreRequest extends FormRequest
+class AdminUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -32,8 +33,14 @@ class AdminStoreRequest extends FormRequest
         return [
             'name' => 'nullable|string|max:30',
             'last_name' => 'nullable|string|max:50',
-            'email' => 'required|string|email|unique:admins|max:255',
-            'password' => 'required|string|confirmed|min:8',
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique('admins')->ignore($this->route()->parameter('admin')->id),
+            ],
+            'password' => 'nullable|string|confirmed|min:8',
             'active' => 'boolean',
         ];
     }
@@ -42,13 +49,18 @@ class AdminStoreRequest extends FormRequest
      * @return array
      */
     public function getData(): array {
-        return [
+        $data = [
             'name' => $this->getName(),
             'last_name' => $this->getLastName(),
             'email' => $this->getEmail(),
-            'password' => $this->getPass(),
             'active' => $this->getActive(),
         ];
+
+        if (!empty($this->input('password'))) {
+            $data['password'] = $this->getPass();
+        }
+
+        return $data;
     }
 
     /**
@@ -73,10 +85,16 @@ class AdminStoreRequest extends FormRequest
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getPass(): string {
-        return Hash::make($this->input('password'));
+    public function getPass(): ?string {
+        $password = $this->input('password');
+
+        if (!empty($password)) {
+            return Hash::make($password);
+        }
+
+        return null;
     }
 
     /**

@@ -7,12 +7,16 @@ namespace App\Http\Controllers\Admin;
 use App\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AdminStoreRequest;
+use App\Http\Requests\Admin\AdminUpdateRequest;
 use Exception;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\View\View;
 
+/**
+ * Class AdminController
+ *
+ * @package App\Http\Controllers\Admin
+ */
 class AdminController extends Controller
 {
     /**
@@ -24,7 +28,7 @@ class AdminController extends Controller
         $admins = Admin::query()->paginate();
 
         return view('admin.list', [
-            'list' => $admins
+            'list' => $admins,
         ]);
     }
 
@@ -71,13 +75,22 @@ class AdminController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param AdminUpdateRequest $request
      * @param Admin $admin
      *
-     * @return Response
+     * @return RedirectResponse
      */
-    public function update(Request $request, Admin $admin) {
-        //
+    public function update(AdminUpdateRequest $request, Admin $admin): RedirectResponse {
+        try {
+            $admin->update($request->getData());
+        } catch (Exception $exception) {
+            return redirect()->back()
+                ->withInput()
+                ->with('danger', 'Something wrong on try to update admin.');
+        }
+
+        return redirect()->route('admins.index')
+            ->with('status', 'Admin Updated!');
     }
 
     /**
@@ -85,10 +98,19 @@ class AdminController extends Controller
      *
      * @param Admin $admin
      *
-     * @return Response
+     * @return RedirectResponse
      */
-    public function destroy(Admin $admin) {
-        //
+    public function destroy(Admin $admin): RedirectResponse {
+        try {
+            $admin->delete();
+        } catch (Exception $exception) {
+            return redirect()->back()
+                ->withInput()
+                ->with('danger', 'Something wrong on try to delete admin.');
+        }
+
+        return redirect()->route('admins.index')
+            ->with('status', 'Admin deleted!');
     }
 
 }
