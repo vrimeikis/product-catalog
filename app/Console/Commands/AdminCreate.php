@@ -52,6 +52,7 @@ class AdminCreate extends Command
 
         $user->email = $email;
         $user->password = Hash::make($password); //bcrypt($password);
+        $user->active = true;
 
         $user->save();
 

@@ -2,9 +2,8 @@
 
 declare(strict_types = 1);
 
-use Carbon\Carbon;
+use App\Category;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 /**
  * Class CategoriesTableSeeder
@@ -18,27 +17,8 @@ class CategoriesTableSeeder extends Seeder
      */
     public function run(): void
     {
-        $now = Carbon::now();
-
-        DB::table('categories')->insert([
-            [
-                'created_at' => $now,
-                'updated_at' => $now,
-                'title' => 'All',
-                'slug' => 'all',
-            ],
-            [
-                'created_at' => $now,
-                'updated_at' => $now,
-                'title' => 'Newest',
-                'slug' => 'newest',
-            ],
-            [
-                'created_at' => $now,
-                'updated_at' => $now,
-                'title' => 'Most seen',
-                'slug' => 'most-seen',
-            ],
-        ]);
+        factory(Category::class)->state('all')->create();
+        factory(Category::class)->state('newest')->create();
+        factory(Category::class)->state('most_seen')->create();
     }
 }
