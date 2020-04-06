@@ -46,6 +46,7 @@ Route::middleware('auth:admin')->group(function () {
         Route::get('admins/me', 'AdminController@me')
             ->name('admins.me');
         Route::resource('admins', 'AdminController')->except('show');
+        Route::resource('roles', 'RoleController');
     });
 
     Route::resource('users', 'UserController')
