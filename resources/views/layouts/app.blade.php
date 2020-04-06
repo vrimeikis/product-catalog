@@ -61,7 +61,7 @@
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 {{--                                    TODO: make admin data --}}
-                                    <a class="dropdown-item" href="{{ route('users.me') }}">{{ __('My info') }}</a>
+                                    <a class="dropdown-item" href="{{ route('admins.me') }}">{{ __('My info') }}</a>
                                     <a class="dropdown-item" href="{{ route('admin.logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

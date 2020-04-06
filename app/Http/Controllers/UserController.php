@@ -19,16 +19,6 @@ use Illuminate\View\View;
 class UserController extends Controller
 {
     /**
-     * @return View
-     */
-    public function me(): View {
-        /** @var User $user */
-        $user = Auth::user();
-
-        return view('user.edit', ['user' => $user]);
-    }
-
-    /**
      * @param UserUpdateRequest $request
      * @param User $user
      *

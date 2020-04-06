@@ -10,6 +10,7 @@ use App\Http\Requests\Admin\AdminStoreRequest;
 use App\Http\Requests\Admin\AdminUpdateRequest;
 use Exception;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 /**
@@ -69,6 +70,16 @@ class AdminController extends Controller
      * @return View
      */
     public function edit(Admin $admin): View {
+        return view('admin.form', ['item' => $admin]);
+    }
+
+    /**
+     * @return View
+     */
+    public function me(): View {
+        /** @var Admin $admin */
+        $admin = Auth::user();
+
         return view('admin.form', ['item' => $admin]);
     }
 
