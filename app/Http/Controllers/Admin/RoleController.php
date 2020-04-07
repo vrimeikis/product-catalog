@@ -6,10 +6,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\RoleStoreRequest;
+use App\Http\Requests\Admin\RoleUpdateRequest;
 use App\Roles;
 use Exception;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class RoleController extends Controller
@@ -61,12 +61,14 @@ class RoleController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Roles $roles
-     * @return \Illuminate\Http\Response
+     * @param Roles $role
+     * @return View
      */
-    public function show(Roles $roles)
+    public function show(Roles $role): View
     {
-        //
+        return view('role.view', [
+            'item' => $role,
+        ]);
     }
 
     /**
@@ -84,23 +86,39 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param Roles $roles
-     * @return \Illuminate\Http\Response
+     * @param RoleUpdateRequest $request
+     * @param Roles $role
+     * @return RedirectResponse
      */
-    public function update(Request $request, Roles $roles)
+    public function update(RoleUpdateRequest $request, Roles $role): RedirectResponse
     {
-        //
+        try {
+            $role->update($request->getData());
+        } catch (Exception $exception) {
+            return back()->withInput()
+                ->with('danger', $exception->getMessage());
+        }
+
+        return redirect()->route('roles.index')
+            ->with('status', 'Role updated.');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param Roles $roles
-     * @return \Illuminate\Http\Response
+     * @param Roles $role
+     * @return RedirectResponse
      */
-    public function destroy(Roles $roles)
+    public function destroy(Roles $role): RedirectResponse
     {
-        //
+        try {
+            $role->delete();
+        } catch (Exception $exception) {
+            return back()
+                ->with('danger', $exception->getMessage());
+        }
+
+        return redirect()->route('roles.index')
+            ->with('status', 'Role deleted.');
     }
 }

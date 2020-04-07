@@ -24,7 +24,9 @@
                                 <tr>
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->name }}</td>
-                                    <td>{{ $item->full_access }}</td>
+                                    <td class="{{ $item->full_access ? 'text-success' : 'text-danger' }}">
+                                        {{ $item->full_access ? 'Yes' : 'No' }}
+                                    </td>
                                     <td>{{ $item->description }}</td>
                                     <td>
                                         <a href="{{ route('roles.edit', ['role' => $item->id]) }}" class="btn btn-sm btn-primary">Edit</a>
