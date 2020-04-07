@@ -20,7 +20,8 @@ class AdminUpdateRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize(): bool {
+    public function authorize(): bool
+    {
         return true;
     }
 
@@ -29,7 +30,8 @@ class AdminUpdateRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(): array {
+    public function rules(): array
+    {
         return [
             'name' => 'nullable|string|max:30',
             'last_name' => 'nullable|string|max:50',
@@ -42,13 +44,15 @@ class AdminUpdateRequest extends FormRequest
             ],
             'password' => 'nullable|string|confirmed|min:8',
             'active' => 'boolean',
+            'roles' => 'sometimes|array',
         ];
     }
 
     /**
      * @return array
      */
-    public function getData(): array {
+    public function getData(): array
+    {
         $data = [
             'name' => $this->getName(),
             'last_name' => $this->getLastName(),
@@ -66,28 +70,32 @@ class AdminUpdateRequest extends FormRequest
     /**
      * @return string|null
      */
-    public function getName(): ?string {
+    public function getName(): ?string
+    {
         return $this->input('name');
     }
 
     /**
      * @return string|null
      */
-    public function getLastName(): ?string {
+    public function getLastName(): ?string
+    {
         return $this->input('last_name');
     }
 
     /**
      * @return string
      */
-    public function getEmail(): string {
+    public function getEmail(): string
+    {
         return $this->input('email');
     }
 
     /**
      * @return null|string
      */
-    public function getPass(): ?string {
+    public function getPass(): ?string
+    {
         $password = $this->input('password');
 
         if (!empty($password)) {
@@ -100,8 +108,17 @@ class AdminUpdateRequest extends FormRequest
     /**
      * @return bool
      */
-    public function getActive(): bool {
+    public function getActive(): bool
+    {
         return (bool)$this->input('active');
+    }
+
+    /**
+     * @return array
+     */
+    public function getRoles(): array
+    {
+        return $this->input('roles', []);
     }
 
 }

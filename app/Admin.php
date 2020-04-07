@@ -6,11 +6,13 @@ namespace App;
 
 use App\Notifications\ResetAdminPasswordNotification;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 
 /**
  * Class Admin
@@ -27,7 +29,9 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
+ * @property-read Collection|Roles[] $roles
  * @property-read int|null $notifications_count
+ * @property-read int|null $roles_count
  * @method static Builder|Admin newModelQuery()
  * @method static Builder|Admin newQuery()
  * @method static Builder|Admin query()
@@ -74,7 +78,24 @@ class Admin extends Authenticatable
         'active' => 'boolean',
     ];
 
-    public function sendPasswordResetNotification($token) {
+    /**
+     * @return BelongsToMany
+     */
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Roles::class,
+            'admin_role',
+            'admin_id',
+            'role_id'
+        );
+    }
+
+    /**
+     * @param string $token
+     */
+    public function sendPasswordResetNotification($token)
+    {
         $this->notify(new ResetAdminPasswordNotification($token));
     }
 

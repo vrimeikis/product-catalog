@@ -81,6 +81,15 @@
                                 </div>
                                 @enderror
                             </div>
+
+                            <div class="form-group">
+                                <label for="roles">Roles</label>
+                                @foreach($roles as $role)
+                                    <input type="checkbox" id="roles" name="roles[]" value="{{ $role->id }}"
+                                           @if(in_array($role->id, old('roles', $rolesIds ?? []))) checked @endif
+                                    > {{ $role->name }}
+                                @endforeach
+                            </div>
                         </div>
 
                         <div class="card-footer">

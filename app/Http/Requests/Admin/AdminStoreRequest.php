@@ -35,6 +35,7 @@ class AdminStoreRequest extends FormRequest
             'email' => 'required|string|email|unique:admins|max:255',
             'password' => 'required|string|confirmed|min:8',
             'active' => 'boolean',
+            'roles' => 'sometimes|array',
         ];
     }
 
@@ -84,6 +85,14 @@ class AdminStoreRequest extends FormRequest
      */
     public function getActive(): bool {
         return (bool)$this->input('active');
+    }
+
+    /**
+     * @return array
+     */
+    public function getRoles(): array
+    {
+        return $this->input('roles', []);
     }
 
 }
