@@ -5,9 +5,11 @@ declare(strict_types = 1);
 namespace App\Console\Commands;
 
 use App\Admin;
+use App\Roles;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Throwable;
 
 /**
  * Class AdminCreate
@@ -45,16 +47,19 @@ class AdminCreate extends Command
      * @return void
      */
     public function handle(): void {
+        $roleId = $this->getRoleId();
         $email = $this->enterEmail();
         $password = $this->enterPassword();
 
-        $user = new Admin();
+        $admin = new Admin();
 
-        $user->email = $email;
-        $user->password = Hash::make($password); //bcrypt($password);
-        $user->active = true;
+        $admin->email = $email;
+        $admin->password = Hash::make($password); //bcrypt($password);
+        $admin->active = true;
 
-        $user->save();
+        $admin->save();
+
+        $admin->roles()->sync([$roleId]);
 
         $this->info('User created!!!');
 
@@ -99,6 +104,109 @@ class AdminCreate extends Command
         }
 
         return $password;
+    }
+
+    /**
+     * @return int
+     */
+    private function getRoleId(): int
+    {
+        $newRoleCreate = 'Create new';
+
+        $roles = Roles::query()
+            ->orderBy('id')
+            ->pluck('name', 'id');
+
+        $role = $this->choice(
+            'Which Role set to Admin user?',
+            array_merge([$newRoleCreate], $roles->toArray())
+        );
+
+        if ($role !== $newRoleCreate) {
+            return (int)$roles->search($role);
+        }
+
+        return $this->createRole();
+    }
+
+    /**
+     * @return int
+     */
+    private function createRole(): int
+    {
+        $name = $this->getRoleName();
+        $description = $this->getRoleDescription();
+        $fullAccess = $this->getRoleFullAccess();
+        $accessibleRoutes = [];
+
+        try {
+            $role = new Roles();
+
+            $role->name = $name;
+            $role->description = $description;
+            $role->full_access = $fullAccess;
+            $role->accessible_routes = $accessibleRoutes;
+
+            $role->saveOrFail();
+
+            return $role->id;
+        } catch (Throwable $exception) {
+            $this->error($exception->getMessage());
+
+            return $this->createRole();
+        }
+    }
+
+    /**
+     * @return string
+     */
+    private function getRoleName(): string
+    {
+        $name = $this->ask('Enter new Role name');
+
+        $validator = Validator::make([
+            'name' => $name,
+        ], [
+            'name' => 'required|string|min:3|max:100|unique:roles',
+        ]);
+
+        if ($validator->fails()) {
+            $this->error($validator->errors()->first('name'));
+
+            return $this->getRoleName();
+        }
+
+        return $name;
+    }
+
+    /**
+     * @return string|null
+     */
+    private function getRoleDescription(): ?string
+    {
+        $description = $this->ask('Enter Role description or not');
+
+        $validator = Validator::make([
+            'description' => $description,
+        ], [
+            'description' => 'nullable|max:1000',
+        ]);
+
+        if ($validator->fails()) {
+            $this->error($validator->errors()->first('description'));
+
+            return $this->getRoleDescription();
+        }
+
+        return $description;
+    }
+
+    /**
+     * @return bool
+     */
+    private function getRoleFullAccess(): bool
+    {
+        return $this->confirm('Has Role full access?', false);
     }
 
 }
