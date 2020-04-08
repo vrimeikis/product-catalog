@@ -4,10 +4,9 @@ declare(strict_types = 1);
 
 namespace App\Console\Commands;
 
-use App\Admin;
 use App\Roles;
+use App\Services\AdminService;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
 
@@ -33,12 +32,20 @@ class AdminCreate extends Command
     protected $description = 'Create admin user.';
 
     /**
+     * @var AdminService
+     */
+    private $adminService;
+
+    /**
      * Create a new command instance.
      *
-     * @return void
+     * @param AdminService $adminService
      */
-    public function __construct() {
+    public function __construct(AdminService $adminService)
+    {
         parent::__construct();
+
+        $this->adminService = $adminService;
     }
 
     /**
@@ -46,18 +53,13 @@ class AdminCreate extends Command
      *
      * @return void
      */
-    public function handle(): void {
+    public function handle(): void
+    {
         $roleId = $this->getRoleId();
         $email = $this->enterEmail();
         $password = $this->enterPassword();
 
-        $admin = new Admin();
-
-        $admin->email = $email;
-        $admin->password = Hash::make($password); //bcrypt($password);
-        $admin->active = true;
-
-        $admin->save();
+        $admin = $this->adminService->create($email, $password, true);
 
         $admin->roles()->sync([$roleId]);
 
@@ -68,7 +70,8 @@ class AdminCreate extends Command
     /**
      * @return string
      */
-    private function enterEmail(): string {
+    private function enterEmail(): string
+    {
         $email = $this->ask('Enter admin E-mail');
         $validator = Validator::make(['email' => $email], [
             'email' => 'required|email|unique:users|max:255',
@@ -86,7 +89,8 @@ class AdminCreate extends Command
     /**
      * @return string
      */
-    private function enterPassword(): string {
+    private function enterPassword(): string
+    {
         $password = $this->secret('Enter admin password');
         $passwordConfirm = $this->secret('Repeat password');
 

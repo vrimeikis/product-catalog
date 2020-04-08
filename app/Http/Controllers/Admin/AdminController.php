@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AdminStoreRequest;
 use App\Http\Requests\Admin\AdminUpdateRequest;
 use App\Roles;
+use App\Services\AdminService;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
@@ -22,6 +23,20 @@ use Illuminate\View\View;
  */
 class AdminController extends Controller
 {
+    /**
+     * @var AdminService
+     */
+    private $service;
+
+    /**
+     * AdminController constructor.
+     * @param AdminService $adminService
+     */
+    public function __construct(AdminService $adminService)
+    {
+        $this->service = $adminService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -61,7 +76,13 @@ class AdminController extends Controller
     public function store(AdminStoreRequest $request): RedirectResponse
     {
         try {
-            $admin = Admin::query()->create($request->getData());
+            $admin = $this->service->create(
+                $request->getEmail(),
+                $request->getPass(),
+                $request->getActive(),
+                $request->getData()
+            );
+
             $admin->roles()->sync($request->getRoles());
         } catch (Exception $exception) {
             return redirect()->back()

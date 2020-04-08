@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Hash;
 
 /**
  * Class AdminStoreRequest
@@ -77,7 +76,7 @@ class AdminStoreRequest extends FormRequest
      * @return string
      */
     public function getPass(): string {
-        return Hash::make($this->input('password'));
+        return $this->input('password');
     }
 
     /**
