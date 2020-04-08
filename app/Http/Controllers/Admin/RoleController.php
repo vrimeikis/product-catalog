@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\RoleStoreRequest;
 use App\Http\Requests\Admin\RoleUpdateRequest;
 use App\Roles;
+use App\Services\RouteAccessManager;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -35,7 +36,13 @@ class RoleController extends Controller
      */
     public function create(): View
     {
-        return view('role.form');
+        /** @var RouteAccessManager $routeManager */
+        $routeManager = app()->make(RouteAccessManager::class);
+        $routesNames = $routeManager->getRoutes();
+
+        return view('role.form', [
+            'routes' => $routesNames,
+        ]);
     }
 
     /**
@@ -80,7 +87,14 @@ class RoleController extends Controller
      */
     public function edit(Roles $role): View
     {
-        return view('role.form', ['item' => $role]);
+        /** @var RouteAccessManager $routeManager */
+        $routeManager = app()->make(RouteAccessManager::class);
+        $routesNames = $routeManager->getRoutes();
+
+        return view('role.form', [
+            'item' => $role,
+            'routes' => $routesNames,
+        ]);
     }
 
     /**

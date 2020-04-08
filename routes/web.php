@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\RouteAccessMiddleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -13,6 +14,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::middleware(RouteAccessMiddleware::ALIAS)->group(function () {
+    Route::get('test', function () {
+        return 'Works';
+    })->name('test');
+});
 
 Route::get('/', function () {
     return view('welcome');
@@ -41,7 +48,7 @@ Route::namespace('Admin\Auth')->prefix('admin')->name('admin.')->group(function 
         ->name('password.update');
 });
 
-Route::middleware('auth:admin')->group(function () {
+Route::middleware(['auth:admin', RouteAccessMiddleware::ALIAS])->group(function () {
     Route::namespace('Admin')->group(function () {
         Route::get('admins/me', 'AdminController@me')
             ->name('admins.me');

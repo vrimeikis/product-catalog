@@ -55,14 +55,14 @@
                                 @enderror
                             </div>
 
-{{--                            <div class="form-group">--}}
-{{--                                <label for="categories">Categories</label>--}}
-{{--                                @foreach($categories as $category)--}}
-{{--                                    <input type="checkbox" id="categories" name="categories[]" value="{{ $category->id }}"--}}
-{{--                                           @if(in_array($category->id, old('categories', $categoryIds ?? []))) checked @endif--}}
-{{--                                    > {{ $category->title }}--}}
-{{--                                @endforeach--}}
-{{--                            </div>--}}
+                            <div class="form-group">
+                                <label for="routes">Routes</label>
+                                @foreach($routes as $route)
+                                    <input type="checkbox" id="routes" name="accessible_routes[]" value="{{ $route }}"
+                                           @if(in_array($route, old('accessible_routes', $item->accessible_routes ?? []))) checked @endif
+                                    > {{ $route }} <br >
+                                @endforeach
+                            </div>
 
 
                         </div>
