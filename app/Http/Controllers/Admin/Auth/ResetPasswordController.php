@@ -32,17 +32,32 @@ class ResetPasswordController extends Controller
      *
      * @return View
      */
-    public function showResetForm(Request $request, $token = null): View {
+    public function showResetForm(Request $request, $token = null): View
+    {
         return view('admin.auth.passwords.reset', [
             'token' => $token,
-            'email' => $request->input('email')
+            'email' => $request->input('email'),
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    protected function credentials(Request $request)
+    {
+        return array_merge(
+            $request->only(
+                'email', 'password', 'password_confirmation', 'token'
+            ), ['active' => true]
+        );
     }
 
     /**
      * @return PasswordBroker
      */
-    public function broker(): PasswordBroker {
+    public function broker(): PasswordBroker
+    {
         return Password::broker('admins');
     }
 

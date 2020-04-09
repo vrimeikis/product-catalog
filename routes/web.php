@@ -15,12 +15,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(RouteAccessMiddleware::ALIAS)->group(function () {
-    Route::get('test', function () {
-        return 'Works';
-    })->name('test');
-});
-
 Route::get('/', function () {
     return view('welcome');
 })->name('index');
