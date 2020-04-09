@@ -10,6 +10,7 @@ use App\Http\Requests\Admin\AdminStoreRequest;
 use App\Http\Requests\Admin\AdminUpdateRequest;
 use App\Roles;
 use App\Services\AdminService;
+use App\Services\RouteAccessManager;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
@@ -27,14 +28,20 @@ class AdminController extends Controller
      * @var AdminService
      */
     private $service;
+    /**
+     * @var RouteAccessManager
+     */
+    private $routeAccessManager;
 
     /**
      * AdminController constructor.
      * @param AdminService $adminService
+     * @param RouteAccessManager $routeAccessManager
      */
-    public function __construct(AdminService $adminService)
+    public function __construct(AdminService $adminService, RouteAccessManager $routeAccessManager)
     {
         $this->service = $adminService;
+        $this->routeAccessManager = $routeAccessManager;
     }
 
     /**
@@ -145,6 +152,8 @@ class AdminController extends Controller
         try {
             $admin->update($request->getData());
             $admin->roles()->sync($request->getRoles());
+
+            $this->routeAccessManager->flushUserCache($admin);
         } catch (Exception $exception) {
             return redirect()->back()
                 ->withInput()
@@ -166,6 +175,7 @@ class AdminController extends Controller
     {
         try {
             $admin->delete();
+            $this->routeAccessManager->flushUserCache($admin);
         } catch (Exception $exception) {
             return redirect()->back()
                 ->withInput()

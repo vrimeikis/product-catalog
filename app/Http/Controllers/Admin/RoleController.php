@@ -16,6 +16,20 @@ use Illuminate\View\View;
 class RoleController extends Controller
 {
     /**
+     * @var RouteAccessManager
+     */
+    private $routeAccessManager;
+
+    /**
+     * RoleController constructor.
+     * @param RouteAccessManager $routeAccessManager
+     */
+    public function __construct(RouteAccessManager $routeAccessManager)
+    {
+        $this->routeAccessManager = $routeAccessManager;
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return View
@@ -36,9 +50,7 @@ class RoleController extends Controller
      */
     public function create(): View
     {
-        /** @var RouteAccessManager $routeManager */
-        $routeManager = app()->make(RouteAccessManager::class);
-        $routesNames = $routeManager->getRoutes();
+        $routesNames = $this->routeAccessManager->getRoutes();
 
         return view('role.form', [
             'routes' => $routesNames,
@@ -87,9 +99,8 @@ class RoleController extends Controller
      */
     public function edit(Roles $role): View
     {
-        /** @var RouteAccessManager $routeManager */
-        $routeManager = app()->make(RouteAccessManager::class);
-        $routesNames = $routeManager->getRoutes();
+
+        $routesNames = $this->routeAccessManager->getRoutes();
 
         return view('role.form', [
             'item' => $role,
@@ -108,6 +119,8 @@ class RoleController extends Controller
     {
         try {
             $role->update($request->getData());
+
+            $this->routeAccessManager->flushCache();
         } catch (Exception $exception) {
             return back()->withInput()
                 ->with('danger', $exception->getMessage());
@@ -127,6 +140,7 @@ class RoleController extends Controller
     {
         try {
             $role->delete();
+            $this->routeAccessManager->flushCache();
         } catch (Exception $exception) {
             return back()
                 ->with('danger', $exception->getMessage());
