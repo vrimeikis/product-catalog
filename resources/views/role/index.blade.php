@@ -7,7 +7,9 @@
                 <div class="card">
                     <div class="card-header">
                         Roles
-                        <a href="{{ route('roles.create') }}" class="btn btn-sm btn-primary">+</a>
+                        @if (canAccess('roles.create'))
+                            <a href="{{ route('roles.create') }}" class="btn btn-sm btn-primary">+</a>
+                        @endif
                     </div>
 
                     <div class="card-body">
@@ -29,13 +31,24 @@
                                     </td>
                                     <td>{{ $item->description }}</td>
                                     <td>
-                                        <a href="{{ route('roles.edit', ['role' => $item->id]) }}" class="btn btn-sm btn-primary">Edit</a>
-                                        <a href="{{ route('roles.show', ['role' => $item->id]) }}" class="btn btn-sm btn-success">Show</a>
-                                        <form action="{{ route('roles.destroy', ['role' => $item->id]) }}" method="post">
-                                            @csrf
-                                            @method('delete')
-                                            <input type="submit" onclick="return confirm('Do you really want to delete a record?');" class="btn btn-sm btn-danger" value="Delete">
-                                        </form>
+                                        @if (canAccess('roles.edit'))
+                                            <a href="{{ route('roles.edit', ['role' => $item->id]) }}"
+                                               class="btn btn-sm btn-primary">Edit</a>
+                                        @endif
+                                        @if (canAccess('roles.show'))
+                                            <a href="{{ route('roles.show', ['role' => $item->id]) }}"
+                                               class="btn btn-sm btn-success">Show</a>
+                                        @endif
+                                        @if (canAccess('roles.destroy'))
+                                            <form action="{{ route('roles.destroy', ['role' => $item->id]) }}"
+                                                  method="post">
+                                                @csrf
+                                                @method('delete')
+                                                <input type="submit"
+                                                       onclick="return confirm('Do you really want to delete a record?');"
+                                                       class="btn btn-sm btn-danger" value="Delete">
+                                            </form>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach

@@ -11,7 +11,7 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         //
     }
@@ -21,8 +21,18 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
-        //
+        $this->loadHelpers();
+    }
+
+    /**
+     * Load helper files
+     *
+     * @return void
+     */
+    private function loadHelpers(): void
+    {
+        include_once __DIR__ . '/../Helpers/route_helper.php';
     }
 }
