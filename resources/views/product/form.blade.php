@@ -14,7 +14,8 @@
                             product
                     </div>
 
-                    <form action="{{ route('products.' . (isset($product->id) ? 'update' : 'store'), isset($product->id) ? ['product' => $product->id] : []) }}" method="post">
+                    <form action="{{ route('products.' . (isset($product->id) ? 'update' : 'store'), isset($product->id) ? ['product' => $product->id] : []) }}"
+                          method="post" enctype="multipart/form-data">
                         @csrf
                         @isset($product->id)
                             @method('put')
@@ -37,6 +38,17 @@
                                 <input class="form-control @error('slug') is-invalid @enderror" type="text" name="slug" id="slug"
                                        value="{{ old('slug', $product->slug ?? '') }}">
                                 @error('slug')
+                                <div class="alert-danger">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="image">Image</label>
+                                <input class=" @error('image') is-invalid @enderror" type="file" name="image" id="image"
+                                       value="">
+                                @error('image')
                                 <div class="alert-danger">
                                     {{ $message }}
                                 </div>
