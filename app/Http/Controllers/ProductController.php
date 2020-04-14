@@ -9,6 +9,7 @@ use App\Http\Requests\ProductStoreRequest;
 use App\Http\Requests\ProductUpdateRequest;
 use App\Product;
 use App\ProductImage;
+use App\Services\ImagesManager;
 use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\RedirectResponse;
@@ -65,14 +66,8 @@ class ProductController extends Controller
         $product = Product::query()->create($data);
         $product->categories()->sync($catIds);
 
-        if ($uploadedFiles = $request->getImages()) {
-            $productImages = [];
-            foreach ($uploadedFiles as $uploadedFile) {
-                $imagePath = $uploadedFile->store('products');
-                $productImages[] = new ProductImage(['file' => $imagePath]);
-            }
-            $product->images()->saveMany($productImages);
-        }
+        ImagesManager::saveMany($product, $request->getImages(), ProductImage::class,
+            'file', ImagesManager::PATH_PRODUCT);
 
         return redirect()->route('products.index');
     }
@@ -84,7 +79,6 @@ class ProductController extends Controller
      */
     public function edit(int $id): View
     {
-        // SELECT * FROM products WHERE id = ?
         /** @var Product $product */
         $product = Product::query()->find($id);
         $productCategoryIds = $product->categories()->pluck('id')->toArray();
@@ -112,22 +106,8 @@ class ProductController extends Controller
         $product->update($data);
         $product->categories()->sync($catIds);
 
-        if ($request->getDeleteImages()) {
-            Storage::delete(
-                $product->images->pluck('file')->toArray()
-            );
-
-            $product->images()->delete();
-        }
-
-        if ($uploadedFiles = $request->getImages()) {
-            $productImages = [];
-            foreach ($uploadedFiles as $uploadedFile) {
-                $imagePath = $uploadedFile->store('products');
-                $productImages[] = new ProductImage(['file' => $imagePath]);
-            }
-            $product->images()->saveMany($productImages);
-        }
+        ImagesManager::saveMany($product, $request->getImages(), ProductImage::class,
+            'file', ImagesManager::PATH_PRODUCT, $request->getDeleteImages());
 
         return redirect()->route('products.index')
             ->with('status', 'Product updated.');

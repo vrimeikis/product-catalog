@@ -127,11 +127,11 @@ class ProductStoreRequest extends FormRequest
     }
 
     /**
-     * @return UploadedFile|null
+     * @return array
      */
-    public function getImages(): ?array
+    public function getImages(): array
     {
-        return $this->file('image');
+        return $this->file('image', []);
     }
 
     /**
