@@ -11,7 +11,7 @@
                         @else
                             New
                         @endisset
-                            product
+                        product
                     </div>
 
                     <form action="{{ route('products.' . (isset($product->id) ? 'update' : 'store'), isset($product->id) ? ['product' => $product->id] : []) }}"
@@ -24,7 +24,8 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="title">Title</label>
-                                <input class="form-control @error('title') is-invalid @enderror" type="text" name="title" id="title"
+                                <input class="form-control @error('title') is-invalid @enderror" type="text"
+                                       name="title" id="title"
                                        value="{{ old('title', $product->title ?? '') }}">
                                 @error('title')
                                 <div class="alert-danger">
@@ -35,7 +36,8 @@
 
                             <div class="form-group">
                                 <label for="slug">Slug</label>
-                                <input class="form-control @error('slug') is-invalid @enderror" type="text" name="slug" id="slug"
+                                <input class="form-control @error('slug') is-invalid @enderror" type="text" name="slug"
+                                       id="slug"
                                        value="{{ old('slug', $product->slug ?? '') }}">
                                 @error('slug')
                                 <div class="alert-danger">
@@ -46,8 +48,15 @@
 
                             <div class="form-group">
                                 <label for="image">Image</label>
-                                <input class=" @error('image') is-invalid @enderror" type="file" name="image" id="image"
-                                       value="">
+                                @isset($product->id)
+                                    @foreach($product->images as $image)
+                                        <img src="{{Storage::url($image->file)}}" width="100px" class="border border-info">
+                                    @endforeach
+                                    <input type="checkbox" name="delete_images" value="1"> {{ __('Delete images') }}
+                                @endisset
+                                <input class=" @error('image') is-invalid @enderror" type="file" name="image[]"
+                                       id="image"
+                                       value="" multiple>
                                 @error('image')
                                 <div class="alert-danger">
                                     {{ $message }}
@@ -69,7 +78,8 @@
 
                             <div class="form-group">
                                 <label for="price">Price</label>
-                                <input class="form-control @error('price') is-invalid @enderror" type="number" name="price" id="price"
+                                <input class="form-control @error('price') is-invalid @enderror" type="number"
+                                       name="price" id="price"
                                        value="{{ old('price', $product->price ?? 0.01) }}" min="0.01" step="0.01">
                                 @error('price')
                                 <div class="alert-danger">
@@ -81,7 +91,8 @@
                             <div class="form-group">
                                 <label for="categories">Categories</label>
                                 @foreach($categories as $category)
-                                    <input type="checkbox" id="categories" name="categories[]" value="{{ $category->id }}"
+                                    <input type="checkbox" id="categories" name="categories[]"
+                                           value="{{ $category->id }}"
                                            @if(in_array($category->id, old('categories', $categoryIds ?? []))) checked @endif
                                     > {{ $category->title }}
                                 @endforeach
@@ -89,7 +100,8 @@
 
                             <div class="form-group">
                                 <label for="active">Active</label>
-                                <input class="@error('active') is-invalid @enderror" type="checkbox" name="active" id="active"
+                                <input class="@error('active') is-invalid @enderror" type="checkbox" name="active"
+                                       id="active"
                                        value="1" @if (old('active', $product->active ?? false)) checked @endif>
                                 @error('active')
                                 <div class="alert-danger">

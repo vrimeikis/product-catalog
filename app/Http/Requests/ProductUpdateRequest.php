@@ -18,7 +18,8 @@ class ProductUpdateRequest extends ProductStoreRequest
      *
      * @return bool
      */
-    public function authorize(): bool {
+    public function authorize(): bool
+    {
         return true;
     }
 
@@ -27,17 +28,29 @@ class ProductUpdateRequest extends ProductStoreRequest
      *
      * @return array
      */
-    public function rules(): array {
-        return parent::rules();
+    public function rules(): array
+    {
+        return array_merge(
+            parent::rules(),
+            [
+                'delete_images' => 'boolean',
+            ]
+        );
     }
 
     /**
      * @return bool
      */
-    protected function slugExists(): bool {
+    protected function slugExists(): bool
+    {
         return Product::query()
             ->where('slug', '=', $this->getSlug())
             ->where('id', '!=', $this->route()->parameter('product')->id)
             ->exists();
+    }
+
+    public function getDeleteImages(): bool
+    {
+        return (bool)$this->input('delete_images');
     }
 }

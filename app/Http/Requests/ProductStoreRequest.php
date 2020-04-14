@@ -41,7 +41,8 @@ class ProductStoreRequest extends FormRequest
                 'array',
             ],
             'active' => 'nullable|boolean',
-            'image' => 'nullable|image',
+            'image' => 'nullable|array',
+            'image.*' => 'nullable|image',
         ];
     }
 
@@ -128,7 +129,7 @@ class ProductStoreRequest extends FormRequest
     /**
      * @return UploadedFile|null
      */
-    public function getImage(): ?UploadedFile
+    public function getImages(): ?array
     {
         return $this->file('image');
     }
