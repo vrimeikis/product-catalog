@@ -7,6 +7,7 @@ namespace App\Http\Requests;
 use App\Product;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 
 /**
@@ -40,6 +41,7 @@ class ProductStoreRequest extends FormRequest
                 'array',
             ],
             'active' => 'nullable|boolean',
+            'image' => 'nullable|image',
         ];
     }
 
@@ -121,6 +123,14 @@ class ProductStoreRequest extends FormRequest
      */
     public function getCategories(): array {
         return $this->input('categories', []);
+    }
+
+    /**
+     * @return UploadedFile|null
+     */
+    public function getImage(): ?UploadedFile
+    {
+        return $this->file('image');
     }
 
     /**
