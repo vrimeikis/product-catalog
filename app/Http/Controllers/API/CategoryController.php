@@ -5,9 +5,9 @@ declare(strict_types = 1);
 namespace App\Http\Controllers\API;
 
 use App\Category;
+use App\DTO\Abstracts\CollectionDTO;
+use App\DTO\CategoryDTO;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\CategoryResource;
-use App\Http\Resources\CategoryResourceCollection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 
@@ -20,9 +20,19 @@ class CategoryController extends Controller
      */
     public function index(): JsonResponse
     {
+        $categoryDTO = new CollectionDTO();
+
         $data = Category::query()->get();
 
-        return response()->json(new CategoryResourceCollection($data));
+        foreach ($data as $item) {
+            $categoryDTO->pushItem(new CategoryDTO($item));
+        }
+
+        return response()->json([
+            'code' => JsonResponse::HTTP_OK,
+            'message' => '',
+            'data' => $categoryDTO,
+            ]);
     }
 
     /**
@@ -37,10 +47,17 @@ class CategoryController extends Controller
             $category = Category::query()->where('slug', '=', $slug)
                 ->firstOrFail();
 
-            return response()->json(new CategoryResource($category));
+            return response()->json([
+                'code' => JsonResponse::HTTP_OK,
+                'message' => '',
+                'data' => new CategoryDTO($category)
+            ]);
         } catch (ModelNotFoundException $exception) {
 
-            return response()->json(['message' => 'No result.'], JsonResponse::HTTP_NOT_FOUND);
+            return response()->json([
+                'code' => JsonResponse::HTTP_NOT_FOUND,
+                'message' => 'No result.'
+            ], JsonResponse::HTTP_NOT_FOUND);
         } catch (\Throwable $exception) {
             logger()->error($exception->getMessage());
 
