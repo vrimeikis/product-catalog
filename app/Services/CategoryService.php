@@ -21,7 +21,8 @@ class CategoryService
     {
         $categoryDTO = new CollectionDTO();
 
-        $data = Category::query()->get();
+        $data = Category::query()
+            ->get();
 
         foreach ($data as $item) {
             $categoryDTO->pushItem(new CategoryDTO($item));
@@ -36,7 +37,8 @@ class CategoryService
      */
     public function getBySlugForApi(string $slug): CategoryDTO
     {
-        $category = Category::query()->where('slug', '=', $slug)
+        $category = Category::query()
+            ->where('slug', '=', $slug)
             ->firstOrFail();
 
         return new CategoryDTO($category);

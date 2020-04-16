@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Responses\ApiResponse;
 use App\Services\CategoryService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
@@ -40,15 +41,11 @@ class CategoryController extends Controller
         try {
             $categoryDTO = $this->categoryService->getAllForApi();
 
-            return response()->json([
-                'code' => JsonResponse::HTTP_OK,
-                'message' => '',
-                'data' => $categoryDTO,
-            ]);
+            return (new ApiResponse())->success($categoryDTO);
         } catch (Throwable $exception) {
             logger()->error($exception->getMessage());
 
-            return response()->json(['message' => 'Something wrong'], JsonResponse::HTTP_BAD_REQUEST);
+            return (new ApiResponse())->exception();
         }
     }
 
@@ -63,21 +60,13 @@ class CategoryController extends Controller
         try {
             $categoryDTO = $this->categoryService->getBySlugForApi($slug);
 
-            return response()->json([
-                'code' => JsonResponse::HTTP_OK,
-                'message' => '',
-                'data' => $categoryDTO,
-            ]);
+            return (new ApiResponse())->success($categoryDTO);
         } catch (ModelNotFoundException $exception) {
-
-            return response()->json([
-                'code' => JsonResponse::HTTP_NOT_FOUND,
-                'message' => 'No result.',
-            ], JsonResponse::HTTP_NOT_FOUND);
+            return (new ApiResponse())->modelNotFound();
         } catch (Throwable $exception) {
             logger()->error($exception->getMessage());
 
-            return response()->json(['message' => 'Something wrong'], JsonResponse::HTTP_BAD_REQUEST);
+            return (new ApiResponse())->exception();
         }
 
     }
