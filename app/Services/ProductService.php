@@ -36,6 +36,7 @@ class ProductService
         $productsDTO = new CollectionDTO();
 
         $products = Product::query()
+            ->with(['images', 'categories'])
             ->where('active', '=', 1)
             ->get();
 

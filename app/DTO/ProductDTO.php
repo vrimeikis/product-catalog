@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\DTO;
 
+use App\DTO\Abstracts\CollectionDTO;
 use App\DTO\Abstracts\DTO;
 use App\Product;
 use Illuminate\Support\Facades\Storage;
@@ -39,9 +40,13 @@ class ProductDTO extends DTO
             'description' => $this->product->description,
             'price' => $this->product->price,
             'images' => $this->getImages(),
+            'categories' => $this->getCategories(),
         ];
     }
 
+    /**
+     * @return array
+     */
     private function getImages(): array
     {
         $images = [];
@@ -51,5 +56,19 @@ class ProductDTO extends DTO
         }
 
         return $images;
+    }
+
+    /**
+     * @return CollectionDTO
+     */
+    private function getCategories(): CollectionDTO
+    {
+        $categoriesDTO = new CollectionDTO();
+
+        foreach ($this->product->categories as $category) {
+            $categoriesDTO->pushItem(new CategoryDTO($category));
+        }
+
+        return $categoriesDTO;
     }
 }

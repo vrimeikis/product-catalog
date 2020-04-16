@@ -30,7 +30,8 @@ class ProductController extends Controller
     public function index(): View
     {
         /** @var LengthAwarePaginator $products */
-        $products = Product::query()->with(['images', 'categories'])
+        $products = Product::query()
+            ->with(['images', 'categories'])
             ->paginate();
 
         return view('product.product-list', [
