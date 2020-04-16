@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace App\Services;
 
 use App\DTO\Abstracts\CollectionDTO;
+use App\DTO\Abstracts\PaginateLengthAwareDTO;
 use App\DTO\ProductDTO;
 use App\Product;
 
@@ -45,5 +46,20 @@ class ProductService
         }
 
         return $productsDTO;
+    }
+
+    public function getPaginateForApi(): PaginateLengthAwareDTO
+    {
+//        $productsDTO = new CollectionDTO();
+
+        $products = Product::query()
+//            ->with(['images', 'categories'])
+            ->where('active', '=', 1)
+            ->paginate(1);
+//        foreach ($products as $product) {
+//            $productsDTO->pushItem(new ProductDTO($product));
+//        }
+
+        return new PaginateLengthAwareDTO($products);
     }
 }

@@ -35,7 +35,7 @@ class ProductController extends Controller
     public function index(): JsonResponse
     {
         try {
-            $productsDto = $this->productService->getAllForApi();
+            $productsDto = $this->productService->getPaginateForApi();
 
             return (new ApiResponse())->success($productsDto);
         } catch (Throwable $exception) {
