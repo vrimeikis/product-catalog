@@ -6,6 +6,10 @@ namespace App\DTO\Abstracts;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
+/**
+ * Class PaginateLengthAwareDTO
+ * @package App\DTO\Abstracts
+ */
 class PaginateLengthAwareDTO extends PaginateDTO
 {
     /**
@@ -26,6 +30,9 @@ class PaginateLengthAwareDTO extends PaginateDTO
         $this->setDefaultData();
     }
 
+    /**
+     * @return void
+     */
     private function setDefaultData(): void
     {
         $lastPage = $this->paginator->lastPage();
@@ -35,7 +42,7 @@ class PaginateLengthAwareDTO extends PaginateDTO
             ->setTotal($this->paginator->total())
             ->setPerPage($this->paginator->perPage())
             ->setFirstPageUrl($this->paginator->url(1))
-            ->setlastPageUrl($this->paginator->url($lastPage))
+            ->setLastPageUrl($this->paginator->url($lastPage))
             ->setNextPageUrl($this->paginator->nextPageUrl())
             ->setPrevPageUrl($this->paginator->previousPageUrl());
     }

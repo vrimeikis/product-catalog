@@ -48,18 +48,22 @@ class ProductService
         return $productsDTO;
     }
 
+    /**
+     * @return PaginateLengthAwareDTO
+     */
     public function getPaginateForApi(): PaginateLengthAwareDTO
     {
-//        $productsDTO = new CollectionDTO();
+        $productsDTO = new CollectionDTO();
 
         $products = Product::query()
-//            ->with(['images', 'categories'])
+            ->with(['images', 'categories'])
             ->where('active', '=', 1)
-            ->paginate(1);
-//        foreach ($products as $product) {
-//            $productsDTO->pushItem(new ProductDTO($product));
-//        }
+            ->paginate();
 
-        return new PaginateLengthAwareDTO($products);
+        foreach ($products as $product) {
+            $productsDTO->pushItem(new ProductDTO($product));
+        }
+
+        return (new PaginateLengthAwareDTO($products))->setData($productsDTO);
     }
 }

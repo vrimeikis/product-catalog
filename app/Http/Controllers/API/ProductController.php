@@ -11,6 +11,10 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Throwable;
 
+/**
+ * Class ProductController
+ * @package App\Http\Controllers\API
+ */
 class ProductController extends Controller
 {
     /**
