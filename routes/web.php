@@ -50,8 +50,7 @@ Route::middleware(['auth:admin', RouteAccessMiddleware::ALIAS])->group(function 
         Route::resource('roles', 'RoleController');
     });
 
-    Route::resource('users', 'UserController')
-        ->only(['update']);
+    Route::resource('customers', 'CustomerController');
 
     Route::prefix('products')->name('products.')->group(function () {
         Route::get('/', 'ProductController@index')
