@@ -57,6 +57,15 @@ class CustomerController extends Controller
      * @param User $customer
      * @return View
      */
+    public function show(User $customer): View
+    {
+        return view('customer.view', ['item' => $customer]);
+    }
+
+    /**
+     * @param User $customer
+     * @return View
+     */
     public function edit(User $customer): View
     {
         return view('customer.form', ['customer' => $customer]);
@@ -84,6 +93,23 @@ class CustomerController extends Controller
                 ->with('status', 'Customer updated!');
         } catch (Exception $exception) {
             return redirect()->back()->withInput()
+                ->with('danger', $exception->getMessage());
+        }
+    }
+
+    /**
+     * @param User $customer
+     * @return RedirectResponse
+     */
+    public function destroy(User $customer): RedirectResponse
+    {
+        try {
+            $customer->delete();
+
+            return redirect()->route('customers.index')
+                ->with('status', 'Customer deleted.');
+        } catch (Exception $exception) {
+            return redirect()->back()
                 ->with('danger', $exception->getMessage());
         }
     }
