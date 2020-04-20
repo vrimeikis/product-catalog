@@ -7,6 +7,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
 use App\Services\CategoryService;
+use App\Services\ProductService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Throwable;
@@ -21,14 +22,20 @@ class CategoryController extends Controller
      * @var CategoryService
      */
     private $categoryService;
+    /**
+     * @var ProductService
+     */
+    private $productService;
 
     /**
      * CategoryController constructor.
      * @param CategoryService $categoryService
+     * @param ProductService $productService
      */
-    public function __construct(CategoryService $categoryService)
+    public function __construct(CategoryService $categoryService, ProductService $productService)
     {
         $this->categoryService = $categoryService;
+        $this->productService = $productService;
     }
 
     /**
@@ -58,7 +65,7 @@ class CategoryController extends Controller
     public function show(string $slug): JsonResponse
     {
         try {
-            $categoryDTO = $this->categoryService->getBySlugForApi($slug);
+            $categoryDTO = $this->productService->getPaginateByCategorySlugForApi($slug);
 
             return (new ApiResponse())->success($categoryDTO);
         } catch (ModelNotFoundException $exception) {

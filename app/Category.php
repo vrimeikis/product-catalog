@@ -5,7 +5,9 @@ declare(strict_types = 1);
 namespace App;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -16,6 +18,8 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  * @property string $title
  * @property string $slug
+ * @property-read Collection|Product[] $products
+ * @property-read int|null $products_count
  * @method static Builder|Category newModelQuery()
  * @method static Builder|Category newQuery()
  * @method static Builder|Category query()
@@ -32,5 +36,13 @@ class Category extends Model
         'title',
         'slug',
     ];
+
+    /**
+     * @return BelongsToMany
+     */
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class);
+    }
 
 }

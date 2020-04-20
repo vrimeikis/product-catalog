@@ -8,6 +8,7 @@ use App\DTO\Abstracts\CollectionDTO;
 use App\DTO\Abstracts\PaginateLengthAwareDTO;
 use App\DTO\ProductDTO;
 use App\Product;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class ProductService
@@ -58,6 +59,29 @@ class ProductService
         $products = Product::query()
             ->with(['images', 'categories'])
             ->where('active', '=', 1)
+            ->paginate();
+
+        foreach ($products as $product) {
+            $productsDTO->pushItem(new ProductDTO($product));
+        }
+
+        return (new PaginateLengthAwareDTO($products))->setData($productsDTO);
+    }
+
+    /**
+     * @param string $slug
+     * @return PaginateLengthAwareDTO
+     */
+    public function getPaginateByCategorySlugForApi(string $slug): PaginateLengthAwareDTO
+    {
+        $productsDTO = new CollectionDTO();
+
+        $products = Product::query()
+            ->with(['images', 'categories'])
+            ->where('active', '=', 1)
+            ->whereHas('categories', function (Builder $query) use ($slug) {
+                $query->where('slug', '=', $slug);
+            })
             ->paginate();
 
         foreach ($products as $product) {
