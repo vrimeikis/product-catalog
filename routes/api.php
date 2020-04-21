@@ -19,6 +19,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::namespace('API')->name('api.')->group(function () {
+    Route::prefix('auth')->group(function () {
+        Route::post('login', 'AuthController@login')->name('login');
+        Route::post('logout', 'AuthController@logout')->name('logout');
+        Route::post('refresh', 'AuthController@refresh')->name('refresh');
+        Route::get('me', 'AuthController@me')->name('me');
+    });
+
     Route::apiResource('categories', 'CategoryController')->only(['index', 'show']);
     Route::apiResource('products', 'ProductController')->only(['index', 'show']);
 });
