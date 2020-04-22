@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Http\Controllers\API;
 
+use App\DTO\CustomerDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\LoginRequest;
 use App\Http\Requests\API\RegisterRequest;
@@ -63,6 +64,23 @@ class AuthenticationController extends Controller
                 'token_type' => 'bearer',
             ]);
 
+        } catch (Exception $exception) {
+            return (new ApiResponse())->exception($exception->getMessage());
+        }
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function me(): JsonResponse
+    {
+        try {
+            /** @var User $customer */
+            $customer = auth('api')->user();
+
+            $customerDTO = new CustomerDTO($customer);
+
+            return (new ApiResponse())->success($customerDTO);
         } catch (Exception $exception) {
             return (new ApiResponse())->exception($exception->getMessage());
         }
