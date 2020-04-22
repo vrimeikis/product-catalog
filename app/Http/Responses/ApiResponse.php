@@ -53,7 +53,7 @@ class ApiResponse
         $response = $this->setStatus(JsonResponse::HTTP_BAD_REQUEST)->base();
         $response['message'] = $message ?? 'Something wrong.';
 
-        return response()->json([], JsonResponse::HTTP_BAD_REQUEST);
+        return response()->json($response, JsonResponse::HTTP_BAD_REQUEST);
     }
 
     /**
