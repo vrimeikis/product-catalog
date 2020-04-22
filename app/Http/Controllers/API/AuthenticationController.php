@@ -12,6 +12,9 @@ use App\Http\Responses\ApiResponse;
 use App\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Laravel\Passport\Token;
+use Lcobucci\JWT\Parser;
 
 /**
  * Class AuthenticationController
@@ -67,6 +70,25 @@ class AuthenticationController extends Controller
         } catch (Exception $exception) {
             return (new ApiResponse())->exception($exception->getMessage());
         }
+    }
+
+    public function logout(Request $request): JsonResponse
+    {
+        try {
+            $value = $request->bearerToken();
+            $tokenId = (new Parser())->parse($value)->getClaim('jti');
+
+            /** @var User $customer */
+            $customer = auth('api')->user();
+
+            /** @var Token $token */
+            $token = $customer->tokens->find($tokenId);
+            $token->revoke();
+        } catch (Exception $exception) {
+            return (new  ApiResponse())->exception($exception->getMessage());
+        }
+
+        return (new ApiResponse())->success();
     }
 
     /**

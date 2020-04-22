@@ -24,6 +24,7 @@ Route::namespace('API')->name('api.')->group(function () {
         Route::post('login', 'AuthenticationController@login')->name('login');
 
         Route::middleware('auth:api')->group(function () {
+            Route::post('logout', 'AuthenticationController@logout')->name('logout');
             Route::get('me', 'AuthenticationController@me')->name('me');
         });
     });
