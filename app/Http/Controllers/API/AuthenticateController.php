@@ -11,7 +11,7 @@ use App\Http\Responses\ApiResponse;
 use App\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Laravel\Sanctum\PersonalAccessToken;
 
 /**
  * Class AuthenticateController
@@ -53,6 +53,25 @@ class AuthenticateController extends Controller
             $customer = auth('sanctum')->user();
 
             return (new ApiResponse())->success(new CustomerMiniDTO($customer));
+        } catch (Exception $exception) {
+            return (new ApiResponse())->exception($exception->getMessage());
+        }
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function logout(): JsonResponse
+    {
+        try {
+            /** @var User $customer */
+            $customer = auth('sanctum')->user();
+
+            /** @var PersonalAccessToken $token */
+            $token = $customer->currentAccessToken();
+            $token->delete();
+
+            return (new ApiResponse())->success();
         } catch (Exception $exception) {
             return (new ApiResponse())->exception($exception->getMessage());
         }

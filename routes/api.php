@@ -23,6 +23,7 @@ Route::namespace('API')->name('api.')->group(function () {
         Route::post('login', 'AuthenticateController@login')->name('login');
 
         Route::middleware('auth:sanctum')->group(function () {
+            Route::post('logout', 'AuthenticateController@logout')->name('logout');
             Route::get('me', 'AuthenticateController@me')->name('me');
         });
     });
