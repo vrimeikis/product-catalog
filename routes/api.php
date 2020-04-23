@@ -19,6 +19,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::namespace('API')->name('api.')->group(function () {
+    Route::prefix('auth')->group(function () {
+        Route::post('login', 'AuthenticateController@login')->name('login');
+    });
+
     Route::apiResource('categories', 'CategoryController')->only(['index', 'show']);
     Route::apiResource('products', 'ProductController')->only(['index', 'show']);
 });

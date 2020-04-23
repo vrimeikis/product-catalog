@@ -57,6 +57,18 @@ class ApiResponse
     }
 
     /**
+     * @param string|null $message
+     * @return JsonResponse
+     */
+    public function unauthorized(?string $message = null): JsonResponse
+    {
+        $response = $this->setStatus(JsonResponse::HTTP_BAD_REQUEST)->base();
+        $response['message'] = $message ?? 'Unauthorized.';
+
+        return response()->json($response, JsonResponse::HTTP_BAD_REQUEST);
+    }
+
+    /**
      * @param int|null $status
      * @return $this
      */
