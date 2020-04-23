@@ -23,6 +23,8 @@ Product catalog administration. Has API with customer login and products.
 - Run `cp .env.example .env` command and update `database credentials` by your own.
 - Run `php artisan key:generate` command.
 - Change `APP_URL` on `.env` file by your own.
+- Add `FILESYSTEM_DRIVER=public` to `.env` file.
+- Run `php artisan storage:link` command.
 - Run `php artisan migrate` command.
 - Run `php artisan db:seed --class=InitialDataSeeder` command.
 - Create first admin user run `php artisan admin:create` command.
