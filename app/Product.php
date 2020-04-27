@@ -25,8 +25,10 @@ use Illuminate\Support\Carbon;
  * @property int $active
  * @property-read Collection|Category[] $categories
  * @property-read Collection|ProductImage[] $images
+ * @property-read Collection|Supply[] $suppliers
  * @property-read int|null $categories_count
  * @property-read int|null $images_count
+ * @property-read int|null $suppliers_count
  * @method static Builder|Product newModelQuery()
  * @method static Builder|Product newQuery()
  * @method static Builder|Product query()
@@ -63,6 +65,14 @@ class Product extends Model
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class, 'category_product', 'product_id', 'category_id');
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function suppliers(): BelongsToMany
+    {
+        return $this->belongsToMany(Supply::class, 'supply_product');
     }
 
     /**

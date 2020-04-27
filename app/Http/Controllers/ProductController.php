@@ -10,6 +10,7 @@ use App\Http\Requests\ProductUpdateRequest;
 use App\Product;
 use App\ProductImage;
 use App\Services\ImagesManager;
+use App\Supply;
 use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\RedirectResponse;
@@ -47,8 +48,11 @@ class ProductController extends Controller
         /** @var Collection|Category[] $categories */
         $categories = Category::query()->get();
 
+        $suppliers = Supply::query()->pluck('title', 'id');
+
         return view('product.form', [
             'categories' => $categories,
+            'suppliers' => $suppliers,
         ]);
     }
 
@@ -62,15 +66,18 @@ class ProductController extends Controller
         $data = $request->getData();
 
         $catIds = $request->getCategories();
+        $supplierIds = $request->getSuppliers();
 
         /** @var Product $product */
         $product = Product::query()->create($data);
         $product->categories()->sync($catIds);
+        $product->suppliers()->sync($supplierIds);
 
         ImagesManager::saveMany($product, $request->getImages(), ProductImage::class,
             'file', ImagesManager::PATH_PRODUCT);
 
-        return redirect()->route('products.index');
+        return redirect()->route('products.index')
+            ->with('status', 'Product created.');
     }
 
     /**
@@ -83,13 +90,17 @@ class ProductController extends Controller
         /** @var Product $product */
         $product = Product::query()->find($id);
         $productCategoryIds = $product->categories()->pluck('id')->toArray();
-        /** @var Category $categories */
+        $productSupplierIds = $product->suppliers()->pluck('id')->toArray();
+        /** @var Collection|Category[] $categories */
         $categories = Category::query()->get();
+        $suppliers = Supply::query()->pluck('title', 'id');
 
         return view('product.form', [
             'product' => $product,
             'categoryIds' => $productCategoryIds,
+            'supplierIds' => $productSupplierIds,
             'categories' => $categories,
+            'suppliers' => $suppliers,
         ]);
     }
 
@@ -103,9 +114,11 @@ class ProductController extends Controller
     {
         $data = $request->getData();
         $catIds = $request->getCategories();
+        $suppliersIds = $request->getSuppliers();
 
         $product->update($data);
         $product->categories()->sync($catIds);
+        $product->suppliers()->sync($suppliersIds);
 
         ImagesManager::saveMany($product, $request->getImages(), ProductImage::class,
             'file', ImagesManager::PATH_PRODUCT, $request->getDeleteImages());

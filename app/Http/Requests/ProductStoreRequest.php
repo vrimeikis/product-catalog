@@ -129,6 +129,13 @@ class ProductStoreRequest extends FormRequest
     /**
      * @return array
      */
+    public function getSuppliers(): array {
+        return $this->input('suppliers', []);
+    }
+
+    /**
+     * @return array
+     */
     public function getImages(): array
     {
         return $this->file('image', []);

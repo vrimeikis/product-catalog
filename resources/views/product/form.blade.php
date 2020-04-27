@@ -97,6 +97,15 @@
                                     > {{ $category->title }}
                                 @endforeach
                             </div>
+                            <div class="form-group">
+                                <label for="suppliers">Suppliers</label>
+                                @foreach($suppliers as $id => $title)
+                                    <input type="checkbox" id="suppliers" name="suppliers[]"
+                                           value="{{ $id }}"
+                                           @if(in_array($id, old('suppliers', $supplierIds ?? []))) checked @endif
+                                    > {{ $title }}
+                                @endforeach
+                            </div>
 
                             <div class="form-group">
                                 <label for="active">Active</label>
