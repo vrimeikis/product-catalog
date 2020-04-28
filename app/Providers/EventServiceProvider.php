@@ -2,9 +2,7 @@
 
 namespace App\Providers;
 
-use App\Events\API\CustomerLoginEvent;
-use App\Events\API\CustomerLogoutEvent;
-use App\Listeners\API\CustomerAuthLogListener;
+use App\Listeners\API\CustomerAuthLogSubscriber;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -21,12 +19,13 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        CustomerLoginEvent::class => [
-            CustomerAuthLogListener::class,
-        ],
-        CustomerLogoutEvent::class => [
-            CustomerAuthLogListener::class,
-        ],
+    ];
+
+    /**
+     * @var array
+     */
+    protected $subscribe = [
+        CustomerAuthLogSubscriber::class
     ];
 
     /**
@@ -40,4 +39,5 @@ class EventServiceProvider extends ServiceProvider
 
         //
     }
+
 }
