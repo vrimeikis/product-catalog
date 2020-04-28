@@ -7,16 +7,17 @@ namespace App\Events\API;
 use App\Events\API\Abstracts\CustomerAuthAbstract;
 
 /**
- * Class CustomerLoginEvent
+ * Class CustomerLogoutEvent
  * @package App\Events\API
  */
-class CustomerLoginEvent extends CustomerAuthAbstract
+class CustomerLogoutEvent extends CustomerAuthAbstract
 {
+
     /**
      * @return string
      */
     public function getType(): string
     {
-        return 'logged_in';
+        return 'logged_out';
     }
 }

@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
@@ -25,9 +26,11 @@ use Laravel\Passport\Token;
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property-read Collection|UserAuthLog[] $authLogs
  * @property-read Collection|Client[] $clients
  * @property-read Collection|Token[] $tokens
  * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
+ * @property-read int|null $auth_logs_count
  * @property-read int|null $clients_count
  * @property-read int|null $tokens_count
  * @property-read int|null $notifications_count
@@ -77,5 +80,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * @return HasMany
+     */
+    public function authLogs(): HasMany
+    {
+        return $this->hasMany(UserAuthLog::class);
+    }
 
 }
