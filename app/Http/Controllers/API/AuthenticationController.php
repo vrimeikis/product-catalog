@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace App\Http\Controllers\API;
 
 use App\DTO\CustomerDTO;
+use App\Events\API\CustomerLoginEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\LoginRequest;
 use App\Http\Requests\API\RegisterRequest;
@@ -13,6 +14,7 @@ use App\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Laravel\Passport\Token;
 use Lcobucci\JWT\Parser;
 
@@ -60,10 +62,12 @@ class AuthenticationController extends Controller
             /** @var User $customer */
             $customer = auth()->user();
 
-            $token = $customer->createToken('Grant Client')->accessToken;
+            $personalAccessToken = $customer->createToken('Grant Client');
+
+            event(new CustomerLoginEvent($customer, $personalAccessToken->token->id, Carbon::now()));
 
             return (new ApiResponse())->success([
-                'token' => $token,
+                'token' => $personalAccessToken->accessToken,
                 'token_type' => 'bearer',
             ]);
 
@@ -72,6 +76,10 @@ class AuthenticationController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function logout(Request $request): JsonResponse
     {
         try {
