@@ -23,6 +23,7 @@ use Illuminate\Support\Carbon;
  * @property string $description
  * @property float $price
  * @property int $active
+ * @property string $type
  * @property-read Collection|Category[] $categories
  * @property-read Collection|ProductImage[] $images
  * @property-read Collection|Supply[] $suppliers
@@ -39,6 +40,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Product wherePrice($value)
  * @method static Builder|Product whereSlug($value)
  * @method static Builder|Product whereTitle($value)
+ * @method static Builder|Product whereType($value)
  * @method static Builder|Product whereUpdatedAt($value)
  * @mixin \Eloquent
  */
@@ -53,6 +55,7 @@ class Product extends Model
         'description',
         'price',
         'active',
+        'type',
     ];
 
     protected $casts = [

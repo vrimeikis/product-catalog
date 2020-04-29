@@ -6,6 +6,7 @@ namespace App\Enum\Abstracts;
 
 use ReflectionClass;
 use ReflectionException;
+use ReflectionMethod;
 
 /**
  * Class Enumerable
@@ -68,6 +69,42 @@ abstract class Enumerable
     public function description(): string
     {
         return $this->description;
+    }
+
+    /**
+     * @return array
+     * @throws ReflectionException
+     */
+    public static function enum(): array {
+        $reflection = new ReflectionClass(get_called_class());
+        $finalMethods = $reflection->getMethods(ReflectionMethod::IS_FINAL);
+
+        $return = [];
+        foreach ($finalMethods as $method) {
+            $enum = $method->invoke(null);
+            $return[$enum->id()] = $enum;
+        }
+
+        return $return;
+    }
+
+    /**
+     * @return array
+     * @throws ReflectionException
+     */
+    public static function options(): array {
+        return array_map(function (Enumerable $enumerable) {
+            return $enumerable->name();
+        }, self::enum());
+    }
+
+    /**
+     * @return array
+     * @throws ReflectionException
+     */
+    public static function enumIds(): array
+    {
+        return array_keys(self::enum());
     }
 
     /**

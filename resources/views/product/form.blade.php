@@ -50,7 +50,8 @@
                                 <label for="image">Image</label>
                                 @isset($product->id)
                                     @foreach($product->images as $image)
-                                        <img src="{{Storage::url($image->file)}}" width="100px" class="border border-info">
+                                        <img src="{{Storage::url($image->file)}}" width="100px"
+                                             class="border border-info">
                                     @endforeach
                                     <input type="checkbox" name="delete_images" value="1"> {{ __('Delete images') }}
                                 @endisset
@@ -86,6 +87,13 @@
                                     {{ $message }}
                                 </div>
                                 @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="type">Product type</label>
+                                @foreach($types as $key => $value)
+                                    <input type="radio" id="type" @if (old('type', $product->type ?? null) == $key) checked @endif  name="type" value="{{ $key }}"> {{ $value }} <br>
+                                @endforeach
                             </div>
 
                             <div class="form-group">
