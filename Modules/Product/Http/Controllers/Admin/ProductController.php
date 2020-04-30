@@ -9,7 +9,6 @@ use App\ProductImage;
 use App\Services\ImagesManager;
 use App\Supply;
 use Exception;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
@@ -32,7 +31,6 @@ class ProductController extends Controller
      */
     public function index(): View
     {
-        /** @var LengthAwarePaginator $products */
         $products = Product::query()
             ->with(['images', 'categories'])
             ->paginate();

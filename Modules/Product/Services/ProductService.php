@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace App\Services;
+namespace Modules\Product\Services;
 
 use App\DTO\Abstracts\CollectionDTO;
 use App\DTO\Abstracts\PaginateLengthAwareDTO;

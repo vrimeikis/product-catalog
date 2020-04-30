@@ -1,6 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
+declare(strict_types = 1);
+
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +15,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/product', function (Request $request) {
-    return $request->user();
+
+Route::namespace('API')->name('api.')->group(function () {
+    Route::apiResource('products', 'ProductController')->only(['index', 'show']);
 });
