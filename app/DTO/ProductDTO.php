@@ -6,8 +6,8 @@ namespace App\DTO;
 
 use App\DTO\Abstracts\CollectionDTO;
 use App\DTO\Abstracts\DTO;
-use App\Product;
 use Illuminate\Support\Facades\Storage;
+use Modules\Product\Entities\Product;
 
 /**
  * Class ProductDTO

@@ -2,8 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace App;
+namespace Modules\Product\Entities;
 
+use App\Category;
+use App\ProductImage;
+use App\Supply;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +17,7 @@ use Illuminate\Support\Carbon;
 /**
  * Class Product
  *
- * @package App
+ * @package Modules\Product\Entities
  * @property int $id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -22,13 +25,13 @@ use Illuminate\Support\Carbon;
  * @property string $slug
  * @property string $description
  * @property float $price
- * @property int $active
+ * @property bool $active
  * @property string $type
  * @property-read Collection|Category[] $categories
- * @property-read Collection|ProductImage[] $images
- * @property-read Collection|Supply[] $suppliers
  * @property-read int|null $categories_count
+ * @property-read Collection|ProductImage[] $images
  * @property-read int|null $images_count
+ * @property-read Collection|Supply[] $suppliers
  * @property-read int|null $suppliers_count
  * @method static Builder|Product newModelQuery()
  * @method static Builder|Product newQuery()
@@ -47,7 +50,7 @@ use Illuminate\Support\Carbon;
 class Product extends Model
 {
     /**
-     * @var array
+     * @var string[]
      */
     protected $fillable = [
         'title',
@@ -58,6 +61,9 @@ class Product extends Model
         'type',
     ];
 
+    /**
+     * @var string[]
+     */
     protected $casts = [
         'active' => 'boolean',
     ];
@@ -85,5 +91,4 @@ class Product extends Model
     {
         return $this->hasMany(ProductImage::class);
     }
-
 }

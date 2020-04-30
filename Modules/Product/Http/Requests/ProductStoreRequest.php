@@ -2,20 +2,19 @@
 
 declare(strict_types = 1);
 
-namespace App\Http\Requests;
+namespace Modules\Product\Http\Requests;
 
-use App\Enum\ProductTypeEnum;
-use App\Product;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Modules\Product\Entities\Product;
+use Modules\Product\Enum\ProductTypeEnum;
+use ReflectionException;
 
 /**
  * Class ProductStoreRequest
- *
- * @package App\Http\Requests
+ * @package Modules\Product\Http\Requests
  */
 class ProductStoreRequest extends FormRequest
 {
@@ -33,6 +32,7 @@ class ProductStoreRequest extends FormRequest
      * Get the validation rules that apply to the request.
      *
      * @return array
+     * @throws ReflectionException
      */
     public function rules(): array
     {
@@ -176,6 +176,4 @@ class ProductStoreRequest extends FormRequest
     {
         return $this->input('type');
     }
-
-
 }

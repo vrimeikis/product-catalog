@@ -2,27 +2,28 @@
 
 declare(strict_types = 1);
 
-namespace App\Http\Controllers;
+namespace Modules\Product\Http\Controllers\Admin;
 
 use App\Category;
-use App\Enum\ProductTypeEnum;
-use App\Http\Requests\ProductStoreRequest;
-use App\Http\Requests\ProductUpdateRequest;
-use App\Product;
 use App\ProductImage;
 use App\Services\ImagesManager;
 use App\Supply;
 use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use Modules\Product\Entities\Product;
+use Modules\Product\Enum\ProductTypeEnum;
+use Modules\Product\Http\Requests\ProductStoreRequest;
+use Modules\Product\Http\Requests\ProductUpdateRequest;
+use ReflectionException;
 
 /**
  * Class ProductController
- *
- * @package App\Http\Controllers
+ * @package Modules\Product\Http\Controllers\Admin
  */
 class ProductController extends Controller
 {
@@ -43,6 +44,7 @@ class ProductController extends Controller
 
     /**
      * @return View
+     * @throws ReflectionException
      */
     public function create(): View
     {
@@ -64,6 +66,7 @@ class ProductController extends Controller
      * @param ProductStoreRequest $request
      *
      * @return RedirectResponse
+     * @throws Exception
      */
     public function store(ProductStoreRequest $request): RedirectResponse
     {
@@ -88,6 +91,7 @@ class ProductController extends Controller
      * @param int $id
      *
      * @return View
+     * @throws ReflectionException
      */
     public function edit(int $id): View
     {
@@ -115,6 +119,7 @@ class ProductController extends Controller
      * @param Product $product
      *
      * @return RedirectResponse
+     * @throws Exception
      */
     public function update(ProductUpdateRequest $request, Product $product): RedirectResponse
     {
@@ -149,5 +154,4 @@ class ProductController extends Controller
         return redirect()->route('products.index')
             ->with('status', 'Product deleted.');
     }
-
 }

@@ -2,14 +2,13 @@
 
 declare(strict_types = 1);
 
-namespace App\Http\Requests;
+namespace Modules\Product\Http\Requests;
 
-use App\Product;
+use Modules\Product\Entities\Product;
 
 /**
  * Class ProductUpdateRequest
- *
- * @package App\Http\Requests
+ * @package Modules\Product\Http\Requests
  */
 class ProductUpdateRequest extends ProductStoreRequest
 {
@@ -49,6 +48,9 @@ class ProductUpdateRequest extends ProductStoreRequest
             ->exists();
     }
 
+    /**
+     * @return bool
+     */
     public function getDeleteImages(): bool
     {
         return (bool)$this->input('delete_images');
