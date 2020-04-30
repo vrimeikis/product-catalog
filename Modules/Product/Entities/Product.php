@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Modules\Product\Entities;
 
 use App\Category;
-use App\ProductImage;
 use App\Supply;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;

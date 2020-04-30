@@ -5,8 +5,6 @@ declare(strict_types = 1);
 namespace Modules\Product\Http\Controllers\Admin;
 
 use App\Category;
-use App\ProductImage;
-use App\Services\ImagesManager;
 use App\Supply;
 use Exception;
 use Illuminate\Http\RedirectResponse;
@@ -15,9 +13,11 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Modules\Product\Entities\Product;
+use Modules\Product\Entities\ProductImage;
 use Modules\Product\Enum\ProductTypeEnum;
 use Modules\Product\Http\Requests\ProductStoreRequest;
 use Modules\Product\Http\Requests\ProductUpdateRequest;
+use Modules\Product\Services\ImagesManager;
 use ReflectionException;
 
 /**

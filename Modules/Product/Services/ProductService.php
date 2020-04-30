@@ -6,8 +6,8 @@ namespace Modules\Product\Services;
 
 use App\DTO\Abstracts\CollectionDTO;
 use App\DTO\Abstracts\PaginateLengthAwareDTO;
-use App\DTO\ProductDTO;
 use Illuminate\Database\Eloquent\Builder;
+use Modules\Product\DTO\ProductDTO;
 use Modules\Product\Entities\Product;
 
 /**
