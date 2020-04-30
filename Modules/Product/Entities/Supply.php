@@ -2,14 +2,14 @@
 
 declare(strict_types = 1);
 
-namespace App;
+namespace Modules\Product\Entities;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
 /**
- * App\Supply
+ * Modules\Product\Entities\Supply
  *
  * @property int $id
  * @property string $title

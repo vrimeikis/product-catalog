@@ -2,11 +2,12 @@
 
 declare(strict_types = 1);
 
-namespace App\Http\Requests\Admin;
+namespace Modules\Product\Http\Requests;
+
 
 /**
  * Class SupplierUpdateRequest
- * @package App\Http\Requests\Admin
+ * @package Modules\Product\Http\Requests
  */
 class SupplierUpdateRequest extends SupplierStoreRequest
 {

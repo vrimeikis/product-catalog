@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Modules\Product\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Supply;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
@@ -14,6 +13,7 @@ use Illuminate\View\View;
 use Modules\Product\Entities\Category;
 use Modules\Product\Entities\Product;
 use Modules\Product\Entities\ProductImage;
+use Modules\Product\Entities\Supply;
 use Modules\Product\Enum\ProductTypeEnum;
 use Modules\Product\Http\Requests\ProductStoreRequest;
 use Modules\Product\Http\Requests\ProductUpdateRequest;

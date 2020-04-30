@@ -48,8 +48,6 @@ Route::middleware(['auth:admin', RouteAccessMiddleware::ALIAS])->group(function 
             ->name('admins.me');
         Route::resource('admins', 'AdminController')->except('show');
         Route::resource('roles', 'RoleController');
-
-        Route::resource('supplier', 'SupplyController');
     });
 
     Route::resource('customers', 'CustomerController');

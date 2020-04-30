@@ -5,13 +5,13 @@ declare(strict_types = 1);
 namespace Modules\Product\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CategoryStoreRequest;
-use App\Http\Requests\CategoryUpdateRequest;
 use Exception;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Modules\Product\Entities\Category;
+use Modules\Product\Http\Requests\CategoryStoreRequest;
+use Modules\Product\Http\Requests\CategoryUpdateRequest;
 
 /**
  * Class CategoryController

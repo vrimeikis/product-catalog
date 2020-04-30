@@ -45,5 +45,7 @@ Route::middleware(['auth:admin', RouteAccessMiddleware::ALIAS])->group(function 
             Route::delete('{category}', 'CategoryController@destroy')
                 ->name('destroy');
         });
+
+        Route::resource('supplier', 'SupplyController');
     });
 });
