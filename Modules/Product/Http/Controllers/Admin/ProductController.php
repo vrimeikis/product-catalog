@@ -4,14 +4,14 @@ declare(strict_types = 1);
 
 namespace Modules\Product\Http\Controllers\Admin;
 
-use App\Category;
+use App\Http\Controllers\Controller;
 use App\Supply;
 use Exception;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use Modules\Product\Entities\Category;
 use Modules\Product\Entities\Product;
 use Modules\Product\Entities\ProductImage;
 use Modules\Product\Enum\ProductTypeEnum;

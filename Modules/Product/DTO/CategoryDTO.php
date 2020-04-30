@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace App\DTO;
+namespace Modules\Product\DTO;
 
-use App\Category;
 use App\DTO\Abstracts\DTO;
+use Modules\Product\Entities\Category;
 
 /**
  * Class CategoryDTO

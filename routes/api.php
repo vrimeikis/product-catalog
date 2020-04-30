@@ -28,6 +28,4 @@ Route::namespace('API')->name('api.')->group(function () {
             Route::get('me', 'AuthenticationController@me')->name('me');
         });
     });
-
-    Route::apiResource('categories', 'CategoryController')->only(['index', 'show']);
 });

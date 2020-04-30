@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace App\Http\Requests;
 
-use App\Category;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
+use Modules\Product\Entities\Category;
 
 /**
  * Class CategoryStoreRequest

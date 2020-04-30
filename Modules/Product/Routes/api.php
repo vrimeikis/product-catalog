@@ -18,4 +18,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::namespace('API')->name('api.')->group(function () {
     Route::apiResource('products', 'ProductController')->only(['index', 'show']);
+    Route::apiResource('categories', 'CategoryController')->only(['index', 'show']);
 });

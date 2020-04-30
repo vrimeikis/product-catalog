@@ -2,13 +2,13 @@
 
 declare(strict_types = 1);
 
-namespace App\Http\Controllers\API;
+namespace Modules\Product\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
-use App\Services\CategoryService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
+use Modules\Product\Services\CategoryService;
 use Modules\Product\Services\ProductService;
 use Throwable;
 

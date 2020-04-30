@@ -2,17 +2,16 @@
 
 declare(strict_types = 1);
 
-namespace App;
+namespace Modules\Product\Entities;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Carbon;
-use Modules\Product\Entities\Product;
 
 /**
- * App\Category
+ * Modules\Product\Entities\Category
  *
  * @property int $id
  * @property Carbon|null $created_at
@@ -45,5 +44,4 @@ class Category extends Model
     {
         return $this->belongsToMany(Product::class);
     }
-
 }
