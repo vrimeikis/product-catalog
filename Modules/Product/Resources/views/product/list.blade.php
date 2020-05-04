@@ -33,7 +33,7 @@
                                     </td>
                                     <td>{{ $item->title }}</td>
                                     <td>{{ $item->slug }}</td>
-                                    <td>{{ $item->price }}</td>
+                                    <td>{{ PriceFormat::formatWithCurrencyCode($item->price) }}</td>
                                     <td>
                                         @foreach($item->categories as $category)
                                             {{$category->title}}<br>
