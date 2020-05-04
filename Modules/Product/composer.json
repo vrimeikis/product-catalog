@@ -1,0 +1,25 @@
+{
+    "name": "vrimeikis/product",
+    "description": "",
+    "authors": [
+        {
+            "name": "Vytautas Rimeikis",
+            "email": "vytautas.rimeikis@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Product\\Providers\\ProductServiceProvider"
+            ],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Product\\": ""
+        }
+    }
+}
