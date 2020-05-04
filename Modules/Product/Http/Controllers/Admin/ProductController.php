@@ -7,16 +7,16 @@ namespace Modules\Product\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Exception;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
-use Modules\Product\Entities\Category;
 use Modules\Product\Entities\Product;
 use Modules\Product\Entities\ProductImage;
-use Modules\Product\Entities\Supply;
 use Modules\Product\Enum\ProductTypeEnum;
 use Modules\Product\Http\Requests\ProductStoreRequest;
 use Modules\Product\Http\Requests\ProductUpdateRequest;
+use Modules\Product\Repositories\CategoryRepository;
+use Modules\Product\Repositories\ProductRepository;
+use Modules\Product\Repositories\SupplyRepository;
 use Modules\Product\Services\ImagesManager;
 use ReflectionException;
 
@@ -27,13 +27,42 @@ use ReflectionException;
 class ProductController extends Controller
 {
     /**
+     * @var ProductRepository
+     */
+    private $productRepository;
+    /**
+     * @var CategoryRepository
+     */
+    private $categoryRepository;
+    /**
+     * @var SupplyRepository
+     */
+    private $supplyRepository;
+
+    /**
+     * ProductController constructor.
+     * @param ProductRepository $productRepository
+     * @param CategoryRepository $categoryRepository
+     * @param SupplyRepository $supplyRepository
+     */
+    public function __construct(
+        ProductRepository $productRepository,
+        CategoryRepository $categoryRepository,
+        SupplyRepository $supplyRepository
+    )
+    {
+        $this->productRepository = $productRepository;
+        $this->categoryRepository = $categoryRepository;
+        $this->supplyRepository = $supplyRepository;
+    }
+
+    /**
      * @return View
      */
     public function index(): View
     {
-        $products = Product::query()
-            ->with(['images', 'categories'])
-            ->paginate();
+        $products = $this->productRepository
+            ->paginateWithRelations(['images', 'categories']);
 
         return view('product::product.list', [
             'list' => $products,
@@ -46,10 +75,8 @@ class ProductController extends Controller
      */
     public function create(): View
     {
-        /** @var Collection|Category[] $categories */
-        $categories = Category::query()->get();
-
-        $suppliers = Supply::query()->pluck('title', 'id');
+        $categories = $this->categoryRepository->all(['id', 'title']);
+        $suppliers = $this->supplyRepository->pluck('title', 'id');
 
         $types = ProductTypeEnum::enum();
 
@@ -74,7 +101,7 @@ class ProductController extends Controller
         $supplierIds = $request->getSuppliers();
 
         /** @var Product $product */
-        $product = Product::query()->create($data);
+        $product = $this->productRepository->create($data);
         $product->categories()->sync($catIds);
         $product->suppliers()->sync($supplierIds);
 
@@ -94,12 +121,11 @@ class ProductController extends Controller
     public function edit(int $id): View
     {
         /** @var Product $product */
-        $product = Product::query()->find($id);
+        $product = $this->productRepository->find($id);
         $productCategoryIds = $product->categories()->pluck('id')->toArray();
         $productSupplierIds = $product->suppliers()->pluck('id')->toArray();
-        /** @var Collection|Category[] $categories */
-        $categories = Category::query()->get();
-        $suppliers = Supply::query()->pluck('title', 'id');
+        $categories = $this->categoryRepository->all(['id', 'title']);
+        $suppliers = $this->supplyRepository->pluck('title', 'id');
         $types = ProductTypeEnum::enum();
 
         return view('product::product.form', [
@@ -125,7 +151,7 @@ class ProductController extends Controller
         $catIds = $request->getCategories();
         $suppliersIds = $request->getSuppliers();
 
-        $product->update($data);
+        $this->productRepository->update($data, $product->id);
         $product->categories()->sync($catIds);
         $product->suppliers()->sync($suppliersIds);
 
@@ -147,7 +173,7 @@ class ProductController extends Controller
             $product->images->pluck('file')->toArray()
         );
 
-        $product->delete();
+        $this->productRepository->delete($product->id);
 
         return redirect()->route('products.index')
             ->with('status', 'Product deleted.');

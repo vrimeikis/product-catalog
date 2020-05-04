@@ -1,0 +1,25 @@
+{
+    "name": "vrimeikis/core",
+    "description": "",
+    "authors": [
+        {
+            "name": "Vytautas Rimeikis",
+            "email": "vytautas.rimeikis@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Core\\Providers\\CoreServiceProvider"
+            ],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Core\\": ""
+        }
+    }
+}
