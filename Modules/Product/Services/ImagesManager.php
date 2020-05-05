@@ -7,6 +7,7 @@ namespace Modules\Product\Services;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Modules\Product\Exceptions\ModelRelationMissingException;
 
 /**
  * Class ImagesManager
@@ -36,7 +37,7 @@ class ImagesManager
      * @param string $pathPrefix
      * @param bool $delete
      * @return iterable
-     * @throws Exception
+     * @throws ModelRelationMissingException
      */
     public static function saveMany(
         Model $model,
@@ -48,7 +49,7 @@ class ImagesManager
     ): iterable
     {
         if (!method_exists($model, 'images')) {
-            throw new Exception('Method images() not exists on ' . class_basename($model) . ' class', 400);
+            throw ModelRelationMissingException::missingImagesRelation(class_basename($model));
         }
 
         if ($delete) {
@@ -68,12 +69,12 @@ class ImagesManager
     /**
      * @param Model $model
      * @param string $relatedClassField
-     * @throws Exception
+     * @throws ModelRelationMissingException
      */
     public static function deleteAll(Model $model, string $relatedClassField = 'file'): void
     {
         if (!method_exists($model, 'images')) {
-            throw new Exception('Method images() not exists on ' . class_basename($model) . ' class', 400);
+            throw ModelRelationMissingException::missingImagesRelation(class_basename($model));
         }
 
         Storage::delete(

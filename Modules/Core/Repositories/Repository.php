@@ -7,6 +7,7 @@ namespace Modules\Core\Repositories;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Modules\Core\Contracts\RepositoryContract;
@@ -49,6 +50,16 @@ abstract class Repository implements RepositoryContract
     public function find(int $id): ?Model
     {
         return $this->makeQuery()->find($id);
+    }
+
+    /**
+     * @param int $id
+     * @return Model
+     *
+     * @throws ModelNotFoundException
+     */
+    public function findOrFail(int $id): Model {
+        return $this->makeQuery()->findOrFail($id);
     }
 
     /**
