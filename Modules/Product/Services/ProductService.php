@@ -113,9 +113,7 @@ class ProductService
     public function delete(int $id): void
     {
         $product = $this->getById($id);
-
         ImagesManager::deleteAll($product);
-
         $this->productRepository->delete($id);
     }
 
@@ -125,31 +123,9 @@ class ProductService
      */
     public function getBySlugForApi(string $slug): ProductDTO
     {
-        $product = Product::query()
-            ->where('active', '=', 1)
-            ->where('slug', '=', $slug)
-            ->firstOrFail();
+        $product = $this->productRepository->getBySlug($slug);
 
         return new ProductDTO($product);
-    }
-
-    /**
-     * @return CollectionDTO
-     */
-    public function getAllForApi(): CollectionDTO
-    {
-        $productsDTO = new CollectionDTO();
-
-        $products = Product::query()
-            ->with(['images', 'categories'])
-            ->where('active', '=', 1)
-            ->get();
-
-        foreach ($products as $product) {
-            $productsDTO->pushItem(new ProductDTO($product));
-        }
-
-        return $productsDTO;
     }
 
     /**
@@ -159,10 +135,7 @@ class ProductService
     {
         $productsDTO = new CollectionDTO();
 
-        $products = Product::query()
-            ->with(['images', 'categories'])
-            ->where('active', '=', 1)
-            ->paginate();
+        $products = $this->productRepository->paginateWithRelations(['images', 'categories'], true);
 
         foreach ($products as $product) {
             $productsDTO->pushItem(new ProductDTO($product));
@@ -172,20 +145,14 @@ class ProductService
     }
 
     /**
-     * @param string $slug
+     * @param string $categorySlug
      * @return PaginateLengthAwareDTO
      */
-    public function getPaginateByCategorySlugForApi(string $slug): PaginateLengthAwareDTO
+    public function getPaginateByCategorySlugForApi(string $categorySlug): PaginateLengthAwareDTO
     {
         $productsDTO = new CollectionDTO();
 
-        $products = Product::query()
-            ->with(['images', 'categories'])
-            ->where('active', '=', 1)
-            ->whereHas('categories', function (Builder $query) use ($slug) {
-                $query->where('slug', '=', $slug);
-            })
-            ->paginate();
+        $products = $this->productRepository->getByCategorySlug($categorySlug);
 
         foreach ($products as $product) {
             $productsDTO->pushItem(new ProductDTO($product));
