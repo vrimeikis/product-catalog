@@ -169,7 +169,7 @@ class ProductController extends Controller
         } catch (Exception $exception) {
             return redirect()->back()
                 ->withInput()
-                ->with('danger', 'Something wrong.');
+                ->with('danger', $exception->getMessage());
         }
 
         return redirect()->route('products.index')
