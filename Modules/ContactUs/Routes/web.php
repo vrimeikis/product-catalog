@@ -11,6 +11,3 @@
 |
 */
 
-Route::prefix('contactus')->group(function() {
-    Route::get('/', 'ContactUsController@index');
-});
