@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Modules\ContactUs\Jobs;
 
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -26,6 +27,10 @@ class NewMessageJob implements ShouldQueue
      */
     protected $message;
 
+    public $tries = 3;
+
+    public $retryAfter = 5;
+
     /**
      * Create a new job instance.
      *
@@ -45,5 +50,10 @@ class NewMessageJob implements ShouldQueue
     {
         Mail::to('admin@admin.com')
             ->send(new NewMessageMail($this->message));
+    }
+
+    public function failed(Exception $exception)
+    {
+
     }
 }
