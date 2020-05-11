@@ -2,14 +2,14 @@
 
 declare(strict_types = 1);
 
-namespace App\DTO;
+namespace Modules\Customer\DTO;
 
-use App\DTO\Abstracts\DTO;
+use Modules\Core\DTO\DTO;
 use App\User;
 
 /**
  * Class CustomerDTO
- * @package App\DTO
+ * @package Modules\Customer\DTO
  */
 class CustomerDTO extends DTO
 {

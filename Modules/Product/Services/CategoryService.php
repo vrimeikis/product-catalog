@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Modules\Product\Services;
 
-use App\DTO\Abstracts\CollectionDTO;
+use Modules\Core\DTO\CollectionDTO;
 use Modules\Product\DTO\CategoryDTO;
 use Modules\Product\Entities\Category;
 

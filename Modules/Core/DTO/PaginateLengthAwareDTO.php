@@ -2,13 +2,13 @@
 
 declare(strict_types = 1);
 
-namespace App\DTO\Abstracts;
+namespace Modules\Core\DTO;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 /**
  * Class PaginateLengthAwareDTO
- * @package App\DTO\Abstracts
+ * @package Modules\Core\DTO
  */
 class PaginateLengthAwareDTO extends PaginateDTO
 {

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Http\Controllers\API;
 
-use App\DTO\CustomerDTO;
+use Modules\Customer\DTO\CustomerDTO;
 use App\Events\API\CustomerLoginEvent;
 use App\Events\API\CustomerLogoutEvent;
 use App\Http\Controllers\Controller;

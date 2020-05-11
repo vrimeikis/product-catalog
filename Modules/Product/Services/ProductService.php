@@ -4,10 +4,9 @@ declare(strict_types = 1);
 
 namespace Modules\Product\Services;
 
-use App\DTO\Abstracts\CollectionDTO;
-use App\DTO\Abstracts\PaginateLengthAwareDTO;
+use Modules\Core\DTO\CollectionDTO;
+use Modules\Core\DTO\PaginateLengthAwareDTO;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Modules\Product\DTO\ProductDTO;

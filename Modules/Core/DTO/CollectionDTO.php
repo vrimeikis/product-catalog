@@ -2,13 +2,13 @@
 
 declare(strict_types = 1);
 
-namespace App\DTO\Abstracts;
+namespace Modules\Core\DTO;
 
 use Illuminate\Support\Collection;
 
 /**
  * Class CollectionDTO
- * @package App\DTO\Abstracts
+ * @package Modules\Core\DTO
  */
 class CollectionDTO extends DTO
 {
