@@ -26,21 +26,27 @@ use Laravel\Passport\Token;
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property string|null $last_name
+ * @property string|null $mobile
+ * @property string|null $address
  * @property-read Collection|UserAuthLog[] $authLogs
- * @property-read Collection|Client[] $clients
- * @property-read Collection|Token[] $tokens
- * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
  * @property-read int|null $auth_logs_count
+ * @property-read Collection|Client[] $clients
  * @property-read int|null $clients_count
- * @property-read int|null $tokens_count
+ * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
+ * @property-read Collection|Token[] $tokens
+ * @property-read int|null $tokens_count
  * @method static Builder|User newModelQuery()
  * @method static Builder|User newQuery()
  * @method static Builder|User query()
+ * @method static Builder|User whereAddress($value)
  * @method static Builder|User whereCreatedAt($value)
  * @method static Builder|User whereEmail($value)
  * @method static Builder|User whereEmailVerifiedAt($value)
  * @method static Builder|User whereId($value)
+ * @method static Builder|User whereLastName($value)
+ * @method static Builder|User whereMobile($value)
  * @method static Builder|User whereName($value)
  * @method static Builder|User wherePassword($value)
  * @method static Builder|User whereRememberToken($value)
@@ -58,8 +64,11 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'last_name',
         'email',
         'password',
+        'mobile',
+        'address',
     ];
 
     /**
