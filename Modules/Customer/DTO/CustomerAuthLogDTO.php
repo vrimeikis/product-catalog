@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Modules\Customer\DTO;
 
 use App\DTO\Abstracts\DTO;
-use App\Enum\CustomerAuthLogTypeEnum;
+use Modules\Customer\Enum\CustomerAuthLogTypeEnum;
 use App\UserAuthLog;
 use Modules\Core\Exceptions\EnumNotFoundException;
 use ReflectionException;

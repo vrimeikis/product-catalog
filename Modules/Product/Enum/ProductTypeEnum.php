@@ -4,12 +4,12 @@ declare(strict_types = 1);
 
 namespace Modules\Product\Enum;
 
-use App\Enum\Abstracts\Enumerable;
+use Modules\Core\Enum\Enumerable;
 use ReflectionException;
 
 /**
  * Class ProductTypeEnum
- * @package App\Enum
+ * @package Modules\Customer\Enum
  */
 class ProductTypeEnum extends Enumerable
 {

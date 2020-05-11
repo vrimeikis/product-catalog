@@ -2,14 +2,14 @@
 
 declare(strict_types = 1);
 
-namespace App\Enum;
+namespace Modules\Customer\Enum;
 
-use App\Enum\Abstracts\Enumerable;
+use Modules\Core\Enum\Enumerable;
 use ReflectionException;
 
 /**
  * Class CustomerAuthLogTypeEnum
- * @package App\Enum
+ * @package Modules\Customer\Enum
  */
 class CustomerAuthLogTypeEnum extends Enumerable
 {

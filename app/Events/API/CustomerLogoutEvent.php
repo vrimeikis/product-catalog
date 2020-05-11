@@ -4,8 +4,9 @@ declare(strict_types = 1);
 
 namespace App\Events\API;
 
-use App\Enum\CustomerAuthLogTypeEnum;
+use Modules\Customer\Enum\CustomerAuthLogTypeEnum;
 use App\Events\API\Abstracts\CustomerAuthAbstract;
+use ReflectionException;
 
 /**
  * Class CustomerLogoutEvent
@@ -16,6 +17,7 @@ class CustomerLogoutEvent extends CustomerAuthAbstract
 
     /**
      * @return string
+     * @throws ReflectionException
      */
     public function getType(): string
     {
