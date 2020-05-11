@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Modules\Customer\DTO;
 
+use App\DTO\Abstracts\CollectionDTO;
 use App\DTO\Abstracts\DTO;
 use App\User;
 
@@ -38,6 +39,23 @@ class CustomerFullDTO extends DTO
             'email' => $this->customer->email,
             'mobile' => $this->customer->mobile,
             'address' => $this->customer->address,
+            'auth_log_list' => $this->getAuthLogs(),
         ];
+    }
+
+    /**
+     * @return CollectionDTO
+     */
+    private function getAuthLogs(): CollectionDTO
+    {
+        $collectionDTO = new CollectionDTO();
+
+        $logs = $this->customer->authLogs;
+
+        foreach ($logs as $log) {
+            $collectionDTO->pushItem(new CustomerAuthLogDTO($log));
+        }
+
+        return $collectionDTO;
     }
 }

@@ -28,6 +28,6 @@ class CustomerAuthLogTypeEnum extends Enumerable
      */
     final public static function loggedOut(): CustomerAuthLogTypeEnum
     {
-        return self::make('logged_out', __('Looged Out'));
+        return self::make('logged_out', __('Logged Out'));
     }
 }
