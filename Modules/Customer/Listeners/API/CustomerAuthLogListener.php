@@ -2,16 +2,14 @@
 
 declare(strict_types = 1);
 
-namespace App\Listeners\API;
+namespace Modules\Customer\Listeners\API;
 
-use App\Events\API\Contracts\CustomerAuthContract;
-use App\Events\API\CustomerLoginEvent;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
+
+use Modules\Customer\Events\API\Contracts\CustomerAuthContract;
 
 /**
  * Class CustomerAuthLogListener
- * @package App\Listeners\API
+ * @package Modules\Customer\Listeners\API
  */
 class CustomerAuthLogListener
 {
@@ -21,9 +19,7 @@ class CustomerAuthLogListener
      * @return void
      */
     public function __construct()
-    {
-        //
-    }
+    {}
 
     /**
      * Handle the event.

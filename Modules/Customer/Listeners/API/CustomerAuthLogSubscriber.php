@@ -2,17 +2,15 @@
 
 declare(strict_types = 1);
 
-namespace App\Listeners\API;
+namespace Modules\Customer\Listeners\API;
 
-use App\Events\API\CustomerLoginEvent;
-use App\Events\API\CustomerLogoutEvent;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Events\Dispatcher;
-use Illuminate\Queue\InteractsWithQueue;
+use Modules\Customer\Events\API\CustomerLoginEvent;
+use Modules\Customer\Events\API\CustomerLogoutEvent;
 
 /**
  * Class CustomerAuthLogSubscriber
- * @package App\Listeners\API
+ * @package Modules\Customer\Listeners\API
  */
 class CustomerAuthLogSubscriber
 {

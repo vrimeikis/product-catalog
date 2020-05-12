@@ -2,15 +2,14 @@
 
 declare(strict_types = 1);
 
-namespace App;
+namespace Modules\Customer\Entities;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
-
 /**
- * App\UserAuthLog
+ * Modules\Customer\Entities\UserAuthLog
  *
  * @property int $id
  * @property int $user_id

@@ -2,15 +2,15 @@
 
 declare(strict_types = 1);
 
-namespace App\Events\API;
+namespace Modules\Customer\Events\API;
 
 use Modules\Customer\Enum\CustomerAuthLogTypeEnum;
-use App\Events\API\Abstracts\CustomerAuthAbstract;
+use Modules\Customer\Events\API\Abstracts\CustomerAuthAbstract;
 use ReflectionException;
 
 /**
  * Class CustomerLogoutEvent
- * @package App\Events\API
+ * @package Modules\Customer\Events\API
  */
 class CustomerLogoutEvent extends CustomerAuthAbstract
 {

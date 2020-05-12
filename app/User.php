@@ -14,6 +14,7 @@ use Illuminate\Support\Carbon;
 use Laravel\Passport\Client;
 use Laravel\Passport\HasApiTokens;
 use Laravel\Passport\Token;
+use Modules\Customer\Entities\UserAuthLog;
 
 /**
  * App\User

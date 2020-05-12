@@ -2,18 +2,18 @@
 
 declare(strict_types = 1);
 
-namespace App\Events\API\Abstracts;
+namespace Modules\Customer\Events\API\Abstracts;
 
-use App\Events\API\Contracts\CustomerAuthContract;
 use App\User;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Carbon;
+use Modules\Customer\Events\API\Contracts\CustomerAuthContract;
 
 /**
  * Class CustomerAuthAbstract
- * @package App\Events\API\Abstracts
+ * @package Modules\Customer\Events\API\Abstracts
  */
 abstract class CustomerAuthAbstract implements CustomerAuthContract
 {

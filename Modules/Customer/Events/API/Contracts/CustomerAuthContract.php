@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace App\Events\API\Contracts;
+namespace Modules\Customer\Events\API\Contracts;
 
 /**
  * Interface CustomerAuthContract
- * @package App\Events\API\Contracts
+ * @package Modules\Customer\Events\API\Contracts
  */
 interface CustomerAuthContract
 {

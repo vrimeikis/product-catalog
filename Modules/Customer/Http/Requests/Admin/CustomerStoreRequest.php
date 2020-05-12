@@ -2,24 +2,25 @@
 
 declare(strict_types = 1);
 
-namespace App\Http\Requests;
+namespace Modules\Customer\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 /**
- * Class CustomerUpdateRequest
- * @package App\Http\Requests
+ * Class CustomerStoreRequest
+ * @package Modules\Customer\Http\Requests\Admin
  */
-class CustomerUpdateRequest extends FormRequest
+class CustomerStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize(): bool {
+    public function authorize()
+    {
         return true;
     }
 
@@ -28,7 +29,8 @@ class CustomerUpdateRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(): array {
+    public function rules()
+    {
         return [
             'name' => 'required|string|max:255',
             'email' => [
@@ -36,16 +38,28 @@ class CustomerUpdateRequest extends FormRequest
                 'string',
                 'email',
                 'max:255',
-                Rule::unique('users')->ignore($this->route()->parameter('customer')->id),
+                Rule::unique('users'),
             ],
-            'password' => 'nullable|string|min:8|confirmed',
+            'password' => 'required|string|min:8|confirmed',
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getData(): array
+    {
+        return [
+            'name' => $this->getName(),
+            'email' => $this->getEmail(),
+            'password' => $this->getHashPassword(),
         ];
     }
 
     /**
      * @return string
      */
-    public function getName(): string
+    private function getName(): string
     {
         return $this->input('name');
     }
@@ -53,23 +67,18 @@ class CustomerUpdateRequest extends FormRequest
     /**
      * @return string
      */
-    public function getEmail(): string
+    private function getEmail(): string
     {
         return $this->input('email');
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getHashPassword(): ?string
+    private function getHashPassword(): string
     {
-        $pass = $this->input('password');
-
-        if ($pass !== null) {
-            $pass = Hash::make($pass);
-        }
-
-        return $pass;
+        return Hash::make($this->input('password'));
     }
+
 
 }

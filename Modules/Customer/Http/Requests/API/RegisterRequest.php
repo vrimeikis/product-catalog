@@ -2,13 +2,13 @@
 
 declare(strict_types = 1);
 
-namespace App\Http\Requests\API;
+namespace Modules\Customer\Http\Requests\API;
 
 use Illuminate\Support\Facades\Hash;
 
 /**
  * Class RegisterRequest
- * @package App\Http\Requests\API
+ * @package Modules\Customer\Http\Requests\API
  */
 class RegisterRequest extends LoginRequest
 {

@@ -2,13 +2,13 @@
 
 declare(strict_types = 1);
 
-namespace App\Http\Requests\API;
+namespace Modules\Customer\Http\Requests\API;
 
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * Class LoginRequest
- * @package App\Http\Requests\API
+ * @package Modules\Customer\Http\Requests\API
  */
 class LoginRequest extends FormRequest
 {

@@ -50,8 +50,6 @@ Route::middleware(['auth:admin', RouteAccessMiddleware::ALIAS])->group(function 
         Route::resource('roles', 'RoleController');
     });
 
-    Route::resource('customers', 'CustomerController');
-
     Route::prefix('products')->name('products.')->group(function () {
         Route::resource('attributes', 'ProductAttributeController')
             ->except(['show']);
