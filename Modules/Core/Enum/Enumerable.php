@@ -120,6 +120,15 @@ abstract class Enumerable
     }
 
     /**
+     * @return string
+     * @throws ReflectionException
+     */
+    public static function json(): string
+    {
+        return json_encode(self::options());
+    }
+
+    /**
      * @return array
      * @throws ReflectionException
      */

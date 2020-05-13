@@ -18,6 +18,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class EnumerableTest extends TestCase
 {
     /**
+     * @group enum
      * @throws ReflectionException
      */
     public function testIdAndNameGettersReturnCorrectData(): void
@@ -29,6 +30,7 @@ class EnumerableTest extends TestCase
     }
 
     /**
+     * @group enum
      * @throws ReflectionException
      */
     public function testReturnDescriptionGetter(): void
@@ -38,6 +40,7 @@ class EnumerableTest extends TestCase
     }
 
     /**
+     * @group enum
      * @throws ReflectionException
      */
     public function testSameTwoEnumCases(): void
@@ -49,6 +52,7 @@ class EnumerableTest extends TestCase
     }
 
     /**
+     * @group enum
      * @throws ReflectionException
      */
     public function testReturnOnlyFinalPublicStaticMethods(): void
@@ -64,6 +68,7 @@ class EnumerableTest extends TestCase
     }
 
     /**
+     * @group enum
      * @throws ReflectionException
      * @throws EnumNotFoundException
      */
@@ -74,15 +79,63 @@ class EnumerableTest extends TestCase
     }
 
     /**
-     * @throws EnumNotFoundException
+     * @group enum
      * @throws ReflectionException
      */
     public function testThrowExceptionOnTryingGetNonExistingEnum(): void
     {
         $this->expectException(EnumNotFoundException::class);
-        $this->expectExceptionMessage('Unable to find enumerable with test_enum of type '. TestEnum::class);
+        $this->expectExceptionMessage('Unable to find enumerable with test_enum of type ' . TestEnum::class);
 
         TestEnum::from('test_enum');
+    }
+
+    /**
+     * @group enum
+     * @throws ReflectionException
+     */
+    public function testOptionsReturnOnlyFinalPublicStaticMethods(): void
+    {
+        $this->assertEquals(
+            [
+                'test_id' => 'test_name',
+                'test_id_2' => 'test_name_2',
+                'test_id_d' => 'Description Name',
+            ],
+            TestEnum::options()
+        );
+    }
+
+    /**
+     * @group enum
+     * @throws ReflectionException
+     */
+    public function testJsonReturnOnlyFinalPublicStaticMethods(): void
+    {
+        $this->assertJsonStringEqualsJsonString(
+            json_encode([
+                'test_id' => 'test_name',
+                'test_id_2' => 'test_name_2',
+                'test_id_d' => 'Description Name',
+            ]),
+            TestEnum::json()
+        );
+    }
+
+    /**
+     * @group enum
+     * @throws ReflectionException
+     */
+    public function testEnumIdsReturnOnlyFinalMethodsIdsAsArray(): void
+    {
+        $this->assertEquals(
+            [
+                'test_id',
+                'test_id_2',
+                'test_id_d',
+            ],
+            TestEnum::enumIds()
+        );
     }
 }
 
