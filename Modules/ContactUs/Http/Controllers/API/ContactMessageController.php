@@ -35,8 +35,6 @@ class ContactMessageController extends Controller
      */
     public function store(ContactMessageRequest $request): JsonResponse
     {
-        $start = microtime(true);
-
         try {
             $message = $this->messageService->storeData($request->getData());
         } catch (Exception $exception) {
@@ -45,8 +43,6 @@ class ContactMessageController extends Controller
 
         NewMessageJob::dispatch($message)->onQueue('mail');
 
-        $finish = microtime(true) - $start;
-
-        return (new ApiResponse())->success(['time' => $finish]);
+        return (new ApiResponse())->success();
     }
 }
