@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Modules\Customer\Services;
 
 use App\User;
+use Illuminate\Database\Eloquent\Model;
 use Modules\Customer\DTO\CustomerFullDTO;
 use Modules\Customer\Exceptions\CustomerException;
 use Modules\Customer\Repositories\CustomerRepository;
@@ -43,13 +44,14 @@ class CustomerService
 
     /**
      * @param array $data
+     * @return int
      * @throws CustomerException
      */
-    public function updateMyInfoApi(array $data): void
+    public function updateMyInfoApi(array $data): int
     {
         $customer = $this->getAuthUser();
 
-        $this->updateInfo($data, $customer->id);
+        return $this->updateInfo($data, $customer->id);
     }
 
     /**
@@ -81,10 +83,20 @@ class CustomerService
     /**
      * @throws CustomerException
      */
-    public function deleteMe(): void
+    public function deleteMe(): int
     {
         $customer = $this->getAuthUser();
 
-        $this->customerRepository->delete($customer->id);
+        return $this->customerRepository->delete($customer->id);
+    }
+
+    /**
+     * @param array $data
+     * @return User|Model
+     * todo: write test
+     */
+    public function create(array $data): User
+    {
+        return $this->customerRepository->create($data);
     }
 }

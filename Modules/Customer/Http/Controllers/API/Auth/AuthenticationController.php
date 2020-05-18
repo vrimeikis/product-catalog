@@ -18,6 +18,7 @@ use Modules\Customer\Events\API\CustomerLoginEvent;
 use Modules\Customer\Events\API\CustomerLogoutEvent;
 use Modules\Customer\Http\Requests\API\LoginRequest;
 use Modules\Customer\Http\Requests\API\RegisterRequest;
+use Modules\Customer\Services\CustomerService;
 
 /**
  * Class AuthenticationController
@@ -25,10 +26,24 @@ use Modules\Customer\Http\Requests\API\RegisterRequest;
  */
 class AuthenticationController extends Controller
 {
+
     /**
      * @var bool
      */
     private $loginAfterSignUp = true;
+    /**
+     * @var CustomerService
+     */
+    private $customerService;
+
+    /**
+     * AuthenticationController constructor.
+     * @param CustomerService $customerService
+     */
+    public function __construct(CustomerService $customerService)
+    {
+        $this->customerService = $customerService;
+    }
 
     /**
      * @param RegisterRequest $request
@@ -38,6 +53,8 @@ class AuthenticationController extends Controller
     {
         try {
             User::query()->create($request->getData());
+            // todo: problem with tests
+//            $this->customerService->create($request->getData());
         } catch (Exception $exception) {
             return (new ApiResponse())->exception($exception->getMessage());
         }
