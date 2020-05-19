@@ -6,6 +6,10 @@ namespace Modules\Customer\Tests\Feature\Http\Controllers\API;
 
 use App\User;
 use Illuminate\Http\JsonResponse;
+use Mockery;
+use Modules\Customer\DTO\CustomerFullDTO;
+use Modules\Customer\Http\Requests\API\CustomerUpdateRequest;
+use Modules\Customer\Services\CustomerService;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -16,7 +20,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  */
 class CustomerControllerTest extends TestCase
 {
-    use RefreshDatabase;
     /**
      * @group customer
      * @group api
@@ -25,9 +28,14 @@ class CustomerControllerTest extends TestCase
     public function testShow(): void
     {
         /** @var User $customer */
-        $customer = factory(User::class)->create();
-
+        $customer = factory(User::class)->make();
         $this->actingAs($customer, 'api');
+
+        $this->partialMock(CustomerService::class, function ($mock) use ($customer) {
+            $mock->shouldReceive('getMyInfoApi')
+                ->once()
+                ->andReturn(new CustomerFullDTO($customer));
+        });
 
         $response = $this->get(route('api.customer.show'), [
             'Accept' => 'application/json',
@@ -44,7 +52,7 @@ class CustomerControllerTest extends TestCase
     public function testFailUpdateValidation(): void
     {
         /** @var User $customer */
-        $customer = factory(User::class)->create();
+        $customer = factory(User::class)->make();
 
         $this->actingAs($customer, 'api');
 
@@ -63,7 +71,12 @@ class CustomerControllerTest extends TestCase
     public function testSuccessUpdate(): void
     {
         /** @var User $customer */
-        $customer = factory(User::class)->create();
+        $customer = factory(User::class)->make();
+
+        // todo: mock right this request class
+        $requestMock = $this->instance(CustomerUpdateRequest::class, Mockery::mock(CustomerUpdateRequest::class, function ($mock) {
+            $mock->shouldReceive(['rules', 'get', 'getData']);
+        }));
 
         $this->actingAs($customer, 'api');
 
@@ -76,21 +89,27 @@ class CustomerControllerTest extends TestCase
         ], [
             'Accept' => 'application/json',
         ]);
+        $response->dump();
 
         $response->assertStatus(JsonResponse::HTTP_OK);
     }
 
     /**
      * @group customer
-     * @group api
+     * @group api1
      * @group customer_api
      */
     public function testDestroy(): void
     {
         /** @var User $customer */
-        $customer = factory(User::class)->create();
+        $customer = factory(User::class)->make();
 
         $this->actingAs($customer, 'api');
+
+        $this->partialMock(CustomerService::class, function ($mock) {
+            $mock->shouldReceive('deleteMe')
+                ->once();
+        });
 
         $response = $this->delete(route('api.customer.destroy'), [], [
             'Accept' => 'application/json',
