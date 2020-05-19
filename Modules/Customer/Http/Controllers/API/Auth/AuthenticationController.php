@@ -52,9 +52,7 @@ class AuthenticationController extends Controller
     public function register(RegisterRequest $request): JsonResponse
     {
         try {
-            User::query()->create($request->getData());
-            // todo: problem with tests
-//            $this->customerService->create($request->getData());
+            $this->customerService->create($request->getData());
         } catch (Exception $exception) {
             return (new ApiResponse())->exception($exception->getMessage());
         }
