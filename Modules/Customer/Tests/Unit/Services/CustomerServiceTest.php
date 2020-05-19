@@ -136,6 +136,25 @@ class CustomerServiceTest extends TestCase
     }
 
     /**
+     * @group service
+     * @group customer1
+     * @group customer_service
+     *
+     * @throws BindingResolutionException
+     */
+    public function testCreate(): void
+    {
+        /** @var User $customer */
+        $customer = factory(User::class)->make();
+        $data = $customer->only('name', 'email', 'password');
+
+        $result = $this->getTestClassInstance()->create($data);
+
+        $this->assertInstanceOf(User::class, $result);
+        $this->assertArrayHasKey('id', $result);
+    }
+
+    /**
      * @return CustomerService
      * @throws BindingResolutionException
      */

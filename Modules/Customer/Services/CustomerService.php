@@ -93,7 +93,6 @@ class CustomerService
     /**
      * @param array $data
      * @return User|Model
-     * todo: write test
      */
     public function create(array $data): User
     {
