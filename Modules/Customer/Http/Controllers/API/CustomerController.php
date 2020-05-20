@@ -6,14 +6,15 @@ namespace Modules\Customer\Http\Controllers\API;
 
 use App\Http\Responses\ApiResponse;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Arr;
 use Modules\Customer\Http\Requests\API\CustomerUpdateRequest;
 use Modules\Customer\Services\CustomerService;
 use Throwable;
 
+/**
+ * Class CustomerController
+ * @package Modules\Customer\Http\Controllers\API
+ */
 class CustomerController extends Controller
 {
     /**
