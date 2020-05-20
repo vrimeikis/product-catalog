@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Arr;
 use Modules\Customer\Http\Requests\API\CustomerUpdateRequest;
 use Modules\Customer\Services\CustomerService;
 use Throwable;
@@ -52,7 +53,9 @@ class CustomerController extends Controller
     public function update(CustomerUpdateRequest $request): JsonResponse
     {
         try {
-            $this->customerService->updateMyInfoApi($request->getData());
+            $data = $request->getData();
+
+            $this->customerService->updateMyInfoApi($data);
         } catch (Throwable $exception) {
             return (new ApiResponse())->exception($exception->getMessage());
         }

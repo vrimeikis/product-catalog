@@ -11,8 +11,6 @@ use Modules\Customer\DTO\CustomerFullDTO;
 use Modules\Customer\Http\Requests\API\CustomerUpdateRequest;
 use Modules\Customer\Services\CustomerService;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * Class CustomerControllerTest
@@ -65,7 +63,7 @@ class CustomerControllerTest extends TestCase
 
     /**
      * @group customer
-     * @group api
+     * @group api1
      * @group customer_api
      */
     public function testSuccessUpdate(): void
@@ -73,10 +71,23 @@ class CustomerControllerTest extends TestCase
         /** @var User $customer */
         $customer = factory(User::class)->make();
 
-        // todo: mock right this request class
-        $requestMock = $this->instance(CustomerUpdateRequest::class, Mockery::mock(CustomerUpdateRequest::class, function ($mock) {
-            $mock->shouldReceive(['rules', 'get', 'getData']);
+        $requestData = [
+            'name' => $customer->name,
+            'email' => $customer->email,
+        ];
+
+        $this->instance(CustomerUpdateRequest::class, Mockery::mock(CustomerUpdateRequest::class, function ($mock) use ($requestData) {
+            $mock->shouldReceive('getData')
+                ->once()
+                ->andReturn($requestData);
         }));
+
+        $this->partialMock(CustomerService::class, function ($mock) use ($requestData) {
+            $mock->shouldReceive('updateMyInfoApi')
+                ->once()
+                ->with($requestData)
+                ->andReturn(1);
+        });
 
         $this->actingAs($customer, 'api');
 
@@ -89,14 +100,13 @@ class CustomerControllerTest extends TestCase
         ], [
             'Accept' => 'application/json',
         ]);
-        $response->dump();
 
         $response->assertStatus(JsonResponse::HTTP_OK);
     }
 
     /**
      * @group customer
-     * @group api1
+     * @group api
      * @group customer_api
      */
     public function testDestroy(): void
