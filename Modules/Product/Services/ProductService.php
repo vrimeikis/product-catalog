@@ -58,10 +58,12 @@ class ProductService
         array $images = []
     ): Product
     {
-        /** @var Product $product */
-        $product = $this->productRepository->create($data);
-        $product->categories()->sync($catIds);
-        $product->suppliers()->sync($supplierIds);
+        $relations = [
+            'categories' => $catIds,
+            'suppliers' => $supplierIds,
+        ];
+
+        $product = $this->productRepository->createWithManyToManyRelations($data, $relations);
 
         ImagesManager::saveMany($product, $images, ProductImage::class,
             'file', ImagesManager::PATH_PRODUCT);

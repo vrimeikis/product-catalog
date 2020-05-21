@@ -182,6 +182,36 @@ class ProductRepositoryTest extends TestCase
     }
 
     /**
+     * @group product
+     * @group repository
+     *
+     * @throws BindingResolutionException
+     */
+    public function testCreateWithRelations(): void
+    {
+        /** @var Collection|Category[] $categories */
+        $categories = factory(Category::class, 2)->create();
+
+        $productData = factory(Product::class)->make()
+            ->toArray();
+
+        $categoryIds = $categories->pluck('id')->toArray();
+
+        $relatedData = [
+            'categories' => $categoryIds,
+        ];
+
+        $result = $this->getTestClassInstance()->createWithManyToManyRelations(
+            $productData,
+            $relatedData
+        );
+
+        $this->assertInstanceOf(Product::class, $result);
+        $this->assertDatabaseHas('products', $productData);
+        $this->assertEquals($categoryIds, $result->categories->pluck('id')->toArray());
+    }
+
+    /**
      * @return ProductRepository
      * @throws BindingResolutionException
      */
