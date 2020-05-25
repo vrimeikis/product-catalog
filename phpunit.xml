@@ -18,6 +18,7 @@
 
         <testsuite name="Feature">
             <directory suffix="Test.php">./tests/Feature</directory>
+            <directory suffix="Test.php">./Modules/Administration/Tests/Feature</directory>
             <directory suffix="Test.php">./Modules/ContactUs/Tests/Feature</directory>
             <directory suffix="Test.php">./Modules/Customer/Tests/Feature</directory>
         </testsuite>

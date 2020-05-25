@@ -4,13 +4,13 @@ declare(strict_types = 1);
 
 namespace App\Services;
 
-use App\Http\Middleware\RouteAccessMiddleware;
 use App\Roles;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
+use Modules\Administration\Http\Middleware\RouteAccessMiddleware;
 
 class RouteAccessManager
 {

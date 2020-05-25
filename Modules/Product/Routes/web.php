@@ -11,8 +11,8 @@
 |
 */
 
-use App\Http\Middleware\RouteAccessMiddleware;
 use Illuminate\Support\Facades\Route;
+use Modules\Administration\Http\Middleware\RouteAccessMiddleware;
 
 Route::middleware(['auth:admin', RouteAccessMiddleware::ALIAS])->group(function () {
     Route::namespace('Admin')->group(function () {

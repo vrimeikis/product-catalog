@@ -2,5 +2,6 @@
     "Product": true,
     "Core": true,
     "ContactUs": true,
-    "Customer": true
+    "Customer": true,
+    "Administration": true
 }

@@ -12,8 +12,8 @@ declare(strict_types = 1);
 |
 */
 
-use App\Http\Middleware\RouteAccessMiddleware;
 use Illuminate\Support\Facades\Route;
+use Modules\Administration\Http\Middleware\RouteAccessMiddleware;
 
 Route::middleware(['auth:admin', RouteAccessMiddleware::ALIAS])->namespace('Admin')->group(function () {
     Route::resource('customers', 'CustomerController');

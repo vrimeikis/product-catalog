@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Middleware\RouteAccessMiddleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Modules\Administration\Http\Middleware\RouteAccessMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,9 +20,6 @@ Route::get('/', function () {
 })->name('index');
 
 Auth::routes(['register' => false]);
-
-Route::get('/home', 'HomeController@index')
-    ->name('home');
 
 Route::namespace('Admin\Auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('login', 'LoginController@showLoginForm')
