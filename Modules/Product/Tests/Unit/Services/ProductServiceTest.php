@@ -7,7 +7,6 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Core\DTO\PaginateLengthAwareDTO;
 use Modules\Product\DTO\ProductDTO;
 use Modules\Product\Entities\Product;
-use Modules\Product\Entities\ProductImage;
 use Modules\Product\Exceptions\ModelRelationMissingException;
 use Modules\Product\Repositories\ProductRepository;
 use Modules\Product\Services\ImagesManager;
@@ -18,6 +17,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ProductServiceTest extends TestCase
 {
+    use WithFaker;
     /**
      * @group service
      * @group product
@@ -66,6 +66,34 @@ class ProductServiceTest extends TestCase
 
         $result = $this->getTestClassInstance()
             ->createWithRelationsAdmin($product->toArray());
+
+        $this->assertInstanceOf(Product::class, $result);
+    }
+
+    /**
+     * @group service
+     * @group product
+     *
+     * @throws BindingResolutionException
+     * @throws ModelRelationMissingException
+     */
+    public function testUpdateWithRelationsAdmin(): void
+    {
+        /** @var Product $product */
+        $product = factory(Product::class)->make(['id' => 1]);
+        $data = [];
+
+        $this->partialMock(ProductRepository::class, function ($mock) use ($product) {
+            $mock->shouldReceive('updateWithManyToManyRelations')
+                ->once()
+                ->andReturn($product);
+        });
+
+        $mock = \Mockery::namedMock(ImagesManager::class, ImagesManagerStub::class);
+        $mock->shouldReceive('saveMany')
+            ->once();
+
+        $result = $this->getTestClassInstance()->updateWithRelationsAdmin($data, $product->id);
 
         $this->assertInstanceOf(Product::class, $result);
     }
@@ -167,6 +195,27 @@ class ProductServiceTest extends TestCase
         });
 
         $result = $this->getTestClassInstance()->getPaginateForApi();
+
+        $this->assertInstanceOf(PaginateLengthAwareDTO::class, $result);
+    }
+
+    /**
+     * @group service
+     * @group product
+     *
+     * @throws BindingResolutionException
+     */
+    public function testGetPaginateByCategorySlugForApi(): void
+    {
+        $slug = $this->faker->slug;
+
+        $this->partialMock(ProductRepository::class, function ($mock) {
+            $mock->shouldReceive('getByCategorySlug')
+                ->once()
+                ->andReturn(new LengthAwarePaginator([], 0, 10));
+        });
+
+        $result = $this->getTestClassInstance()->getPaginateByCategorySlugForApi($slug);
 
         $this->assertInstanceOf(PaginateLengthAwareDTO::class, $result);
     }

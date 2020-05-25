@@ -212,6 +212,45 @@ class ProductRepositoryTest extends TestCase
     }
 
     /**
+     * @group product
+     * @group repository
+     *
+     * @throws BindingResolutionException
+     */
+    public function testUpdateWithManyToManyRelations(): void
+    {
+        $updateTitle = 'Updated Product';
+
+        /** @var Category $category1 */
+        $category1 = factory(Category::class)->create();
+        /** @var Category $category2 */
+        $category2 = factory(Category::class)->create();
+
+        /** @var Product $product */
+        $product = factory(Product::class)->create([
+            'title' => 'Test Product',
+        ]);
+        $product->categories()->attach([$category1->id]);
+
+        $result = $this->getTestClassInstance()->updateWithManyToManyRelations($product->id, [
+            'title' => $updateTitle,
+        ], [
+            'categories' => [
+                $category2->id,
+            ],
+        ]);
+
+        $this->assertInstanceOf(Product::class, $result);
+
+        $this->assertDatabaseHas('products', [
+            'id' => $product->id,
+            'title' => $updateTitle,
+        ]);
+
+        $this->assertEquals([$category2->id], $result->categories->pluck('id')->toArray());
+    }
+
+    /**
      * @return ProductRepository
      * @throws BindingResolutionException
      */

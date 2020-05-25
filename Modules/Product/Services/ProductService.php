@@ -84,15 +84,13 @@ class ProductService
         bool $deleteImages = false
     ): Product
     {
-        $this->productRepository->update($data, $id);
-
-        $product = $this->getById($id);
-
-        $product->categories()->sync(Arr::get($data, 'categories', []));
-        $product->suppliers()->sync(Arr::get($data, 'suppliers', []));
+        $relatedData = [
+            'categories' => Arr::get($data, 'categories', []),
+            'suppliers' => Arr::get($data, 'suppliers', []),
+        ];
+        $product = $this->productRepository->updateWithManyToManyRelations($id, $data, $relatedData);
 
         $images = Arr::get($data, 'images', []);
-
         ImagesManager::saveMany($product, $images, ProductImage::class,
             'file', ImagesManager::PATH_PRODUCT, $deleteImages);
 
