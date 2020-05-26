@@ -10,14 +10,14 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/administration/administration.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/administration/administration.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -32,10 +32,10 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    @include('layouts.menu.left')
+                    @include('administration::layouts.menu.left')
 
                     <!-- Right Side Of Navbar -->
-                    @include('layouts.menu.right')
+                    @include('administration::layouts.menu.right')
                 </div>
             </div>
         </nav>

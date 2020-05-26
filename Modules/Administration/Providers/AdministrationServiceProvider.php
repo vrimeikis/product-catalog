@@ -37,6 +37,7 @@ class AdministrationServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->registerFactories();
+        $this->registerAssets();
         $this->loadMigrationsFrom(module_path($this->moduleName, 'Database/Migrations'));
         $this->loadHelpers();
     }
@@ -115,6 +116,17 @@ class AdministrationServiceProvider extends ServiceProvider
         if (!app()->environment('production') && $this->app->runningInConsole()) {
             app(Factory::class)->load(module_path($this->moduleName, 'Database/factories'));
         }
+    }
+
+    /**
+     * @return void
+     */
+    public function registerAssets(): void
+    {
+        $this->publishes([
+            __DIR__ . '/../Assets/css/administration.css' => public_path('css/administration/administration.css'),
+            __DIR__ . '/../Assets/js/administration.js' => public_path('js/administration/administration.js'),
+        ], 'administration-assets');
     }
 
     /**
