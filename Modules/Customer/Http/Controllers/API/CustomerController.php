@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Modules\Customer\Http\Controllers\API;
 
-use App\Http\Responses\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
+use Modules\Core\Responses\ApiResponse;
 use Modules\Customer\Http\Requests\API\CustomerUpdateRequest;
 use Modules\Customer\Services\CustomerService;
 use Throwable;

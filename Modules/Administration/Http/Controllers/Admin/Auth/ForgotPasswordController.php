@@ -1,0 +1,40 @@
+<?php
+
+declare(strict_types = 1);
+
+namespace Modules\Administration\Http\Controllers\Admin\Auth;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
+use Illuminate\View\View;
+
+/**
+ * Class ForgotPasswordController
+ * @package Modules\Administration\Http\Controllers\Admin\Auth
+ */
+class ForgotPasswordController extends Controller
+{
+    use SendsPasswordResetEmails;
+
+    public function showLinkRequestForm(): View
+    {
+        return view('administration::admin.auth.passwords.email');
+    }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    protected function credentials(Request $request)
+    {
+        return array_merge($request->only('email'), ['active' => true]);
+    }
+
+    public function broker()
+    {
+        return Password::broker('admins');
+    }
+
+}

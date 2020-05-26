@@ -4,12 +4,12 @@ declare(strict_types = 1);
 
 namespace Modules\Administration\Http\Middleware;
 
-use App\Services\RouteAccessManager;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Modules\Administration\Services\RouteAccessManager;
 
 class RouteAccessMiddleware
 {

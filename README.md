@@ -26,7 +26,7 @@ Product catalog administration. Has API with customer login and products.
 - Add `FILESYSTEM_DRIVER=public` to `.env` file.
 - Run `php artisan storage:link` command.
 - Run `php artisan migrate` command.
-- Run `php artisan db:seed --class=InitialDataSeeder` command.
+- Run `php artisan module:seed Administration` command.
 - Create first admin user run `php artisan admin:create` command.
 - Run `php artisan passport:install` command.
 - If you don't have virtualization run `php artisan serve` command.

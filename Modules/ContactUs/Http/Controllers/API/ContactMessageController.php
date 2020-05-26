@@ -4,13 +4,13 @@ declare(strict_types = 1);
 
 namespace Modules\ContactUs\Http\Controllers\API;
 
-use App\Http\Responses\ApiResponse;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Modules\ContactUs\Http\Requests\API\ContactMessageRequest;
 use Modules\ContactUs\Jobs\NewMessageJob;
 use Modules\ContactUs\Services\ContactMessageService;
+use Modules\Core\Responses\ApiResponse;
 
 class ContactMessageController extends Controller
 {

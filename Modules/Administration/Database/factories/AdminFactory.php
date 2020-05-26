@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-use App\Admin;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
+use Modules\Administration\Entities\Admin;
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(Admin::class, function (Faker $faker) {
