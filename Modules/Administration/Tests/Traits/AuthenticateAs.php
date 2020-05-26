@@ -8,22 +8,38 @@ use App\Admin;
 use App\Roles;
 use Illuminate\Contracts\Auth\Authenticatable;
 
+/**
+ * Trait AuthenticateAs
+ * @package Modules\Administration\Tests\Traits
+ */
 trait AuthenticateAs
 {
+    /**
+     * @param array|string[] $roles
+     * @param array $adminData
+     * @param array $accessibleRoutes
+     * @return Authenticatable
+     */
     public function authenticateAs(
         array $roles = ['admin'],
         array $adminData = [],
         array $accessibleRoutes = []
-    )
+    ): Authenticatable
     {
         $adminUser = factory(Admin::class)->create($adminData);
 
-        $this->createRoles($adminUser, $roles);
-
+        $this->createRoles($adminUser, $roles, $accessibleRoutes);
         $this->actingAs($adminUser, 'admin');
+
+        return $adminUser;
     }
 
-    private function createRoles(Authenticatable $admin, array $roles)
+    /**
+     * @param Authenticatable $admin
+     * @param array $roles
+     * @param array $accessibleRoutes
+     */
+    private function createRoles(Authenticatable $admin, array $roles, array $accessibleRoutes)
     {
         $createdRoles = collect();
         foreach ($roles as $role) {
@@ -32,6 +48,7 @@ trait AuthenticateAs
                 factory(Roles::class)->create([
                     'name' => $role,
                     'full_access' => ($role == 'admin'),
+                    'accessible_routes' => ($role == 'admin') ? [] : $accessibleRoutes,
                 ])
             );
         }

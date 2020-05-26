@@ -4,11 +4,8 @@ declare(strict_types = 1);
 
 namespace Modules\Administration\Tests\Feature\Http\Middleware;
 
-use App\Admin;
-use App\Roles;
 use Modules\Administration\Tests\Traits\AuthenticateAs;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -46,15 +43,7 @@ class RouteAccessMiddlewareTest extends TestCase
      */
     public function testGivesAccessToUserWithRequiredRole(): void
     {
-        /** @var Roles $role */
-        $role = factory(Roles::class)->state('moderator')->create([
-            'accessible_routes' => ['admins.index'],
-        ]);
-        /** @var Admin $admin */
-        $admin = factory(Admin::class)->create();
-        $admin->roles()->sync([$role->id]);
-
-        $this->actingAs($admin, 'admin');
+        $this->authenticateAs(['moderator'], [], ['admins.index']);
 
         $response = $this->get(route('admins.index'));
         $response->assertOk();
@@ -65,13 +54,7 @@ class RouteAccessMiddlewareTest extends TestCase
      */
     public function testGivesAccessToUserWithFullAccess(): void
     {
-        /** @var Roles $role */
-        $role = factory(Roles::class)->state('super_admin')->create();
-        /** @var Admin $admin */
-        $admin = factory(Admin::class)->create();
-        $admin->roles()->sync([$role->id]);
-
-        $this->actingAs($admin, 'admin');
+        $this->authenticateAs();
 
         $response = $this->get(route('admins.index'));
         $response->assertOk();
