@@ -3,7 +3,7 @@
     "alias": "contactus",
     "description": "",
     "keywords": [],
-    "order": 0,
+    "order": 4,
     "providers": [
         "Modules\\ContactUs\\Providers\\ContactUsServiceProvider"
     ],
