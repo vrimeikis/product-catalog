@@ -3,5 +3,6 @@
     "Core": true,
     "ContactUs": true,
     "Customer": true,
-    "Administration": true
+    "Administration": true,
+    "Api": true
 }
