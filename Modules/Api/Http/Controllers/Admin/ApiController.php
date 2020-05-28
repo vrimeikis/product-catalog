@@ -6,11 +6,11 @@ namespace Modules\Api\Http\Controllers\Admin;
 
 use Exception;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\View\View;
 use Modules\Api\Entities\ApiKey;
 use Modules\Api\Http\Requests\Admin\AppKeyStoreRequest;
+use Modules\Api\Http\Requests\Admin\AppKeyUpdateRequest;
 use Modules\Api\Services\ApiKeyService;
 
 /**
@@ -93,13 +93,20 @@ class ApiController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * @param Request $request
+     * @param AppKeyUpdateRequest $request
      * @param int $id
      * @return RedirectResponse
      */
-    public function update(Request $request, $id): RedirectResponse
+    public function update(AppKeyUpdateRequest $request, int $id): RedirectResponse
     {
-        //
+        try {
+            $this->apiKeyService->updateById($id, $request->getTitle(), $request->getActive());
+
+            return redirect()->route('api_keys.index')
+                ->with('status', 'App key updated.');
+        } catch (Exception $exception) {
+            return back()->with('danger', $exception->getMessage());
+        }
     }
 
     /**

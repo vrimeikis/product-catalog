@@ -54,10 +54,27 @@ class ApiKeyService
     }
 
     /**
+     * @param int $id
+     * @param string $title
+     * @param bool $active
+     * @return int
+     */
+    public function updateById(int $id, string $title, bool $active): int
+    {
+        $data = [
+            'title' => $title,
+            'active' => $active,
+        ];
+
+        return $this->apiKeyRepository->update($data, $id);
+    }
+
+    /**
      * @return UuidInterface
      */
     private function generateAppKey(): UuidInterface
     {
         return Uuid::uuid4();
     }
+
 }

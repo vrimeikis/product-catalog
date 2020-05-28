@@ -61,6 +61,28 @@ class ApiKeyServiceTest extends TestCase
     }
 
     /**
+     * @group api
+     * @group api_key
+     *
+     * @throws BindingResolutionException
+     */
+    public function testUpdateById(): void
+    {
+        /** @var ApiKey $appKey */
+        $appKey = factory(ApiKey::class)->make([
+            'id' => 1,
+        ]);
+
+        $this->partialMock(ApiKeyRepository::class, function ($mock) {
+            $mock->shouldReceive('update')
+                ->once()
+                ->andReturn(1);
+        });
+
+        $this->getTestClassInstance()->updateById($appKey->id, $appKey->title, $appKey->active);
+    }
+
+    /**
      * @return ApiKeyService
      * @throws BindingResolutionException
      */
