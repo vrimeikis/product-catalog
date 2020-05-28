@@ -73,7 +73,7 @@ class AppKeyManager
      */
     private function setAppKeyFromRequest(): void
     {
-        $this->appKey = $this->request->header('PRIVATE-API-KEY', null);
+        $this->appKey = $this->request->header(config('api.private_app_key_name'), null);
     }
 
     /**

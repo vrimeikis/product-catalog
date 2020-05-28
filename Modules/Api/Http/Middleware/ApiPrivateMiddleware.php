@@ -40,6 +40,12 @@ class ApiPrivateMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+        $devMode = (bool)config('api.dev_mode', false);
+
+        if ($devMode) {
+            return $next($request);
+        }
+
         try {
             $this->appKeyManager->checkRequestApiKey();
         } catch (AppKeyException $exception) {
